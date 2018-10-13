@@ -42,6 +42,7 @@ dependencyManagement {
   imports {
     mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
     //jhipster-needle-gradle-dependency-management - JHipster will add additional dependencies management here
+    mavenBom 'org.activiti.cloud:activiti-cloud-dependencies:'+activiti_cloud_version
   }
 }
 
@@ -159,6 +160,9 @@ configurations {
 
 repositories {
     mavenLocal()
+    maven {
+        url "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
     mavenCentral()
     jcenter()
     //jhipster-needle-gradle-repositories - JHipster will add additional repositories
@@ -167,7 +171,9 @@ repositories {
 dependencies {
     // Use ", version: jhipster_dependencies_version, changing: true" if you want
     // to use a SNAPSHOT release instead of a stable release
-    compile group: "io.github.jhipster", name: "jhipster-framework"
+    compile ("io.github.jhipster:jhipster-framework"){
+        exclude group: 'io.springfox'
+    }
     compile "org.springframework.boot:spring-boot-starter-cache"
     compile "io.dropwizard.metrics:metrics-core"
     compile "io.dropwizard.metrics:metrics-json"
@@ -226,10 +232,10 @@ dependencies {
     compile "io.jsonwebtoken:jjwt-api"
     runtime "io.jsonwebtoken:jjwt-impl"
     runtime "io.jsonwebtoken:jjwt-jackson"
-    compile ("io.springfox:springfox-swagger2") {
-        exclude module: 'mapstruct'
-    }
-    compile "io.springfox:springfox-bean-validators"
+//    compile ("io.springfox:springfox-swagger2") {
+//        exclude module: 'mapstruct'
+//    }
+//    compile "io.springfox:springfox-bean-validators"
     compile "mysql:mysql-connector-java"
     liquibaseRuntime "mysql:mysql-connector-java"
     compile "org.mapstruct:mapstruct-jdk8:${mapstruct_version}"
@@ -252,6 +258,14 @@ dependencies {
     testCompile "com.h2database:h2"
     liquibaseRuntime "com.h2database:h2"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+
+    // https://mvnrepository.com/artifact/org.activiti.cloud/activiti-cloud-starter-runtime-bundle
+    compile("org.activiti.cloud:activiti-cloud-starter-runtime-bundle"){
+        exclude module: 'activiti-cloud-services-identity-keycloak'
+        exclude module: 'activiti-cloud-services-common-security-keycloak'
+        exclude module: 'spring-cloud-config-client'
+//        exclude group: 'io.springfox'
+    }
 }
 
 task cleanResources(type: Delete) {
@@ -268,3 +282,9 @@ task stage(dependsOn: 'bootWar') {
 compileJava.dependsOn processResources
 processResources.dependsOn cleanResources,bootBuildInfo
 bootBuildInfo.mustRunAfter cleanResources
+
+task helloworld << {
+    4.times {
+        println 'hello gradle!'
+    }
+}

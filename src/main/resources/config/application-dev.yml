@@ -47,9 +47,10 @@ spring:
         password:
         hikari:
             auto-commit: false
+#        initialization-mode: always
     h2:
         console:
-            enabled: false
+            enabled: true
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedH2Dialect
         database: H2
@@ -81,7 +82,50 @@ spring:
         locator:
             discovery:
                 enabled: true
-
+    cloud:
+        refresh:
+            enabled: false
+        stream:
+            bindings:
+                auditProducer:
+                    destination: ${ACT_RB_AUDIT_PRODUCER_DEST:engineEvents} # destination corresponds to Kafka's topic or exchanges pf RabbitMQ
+                    contentType: ${ACT_RB_AUDIT_PRODUCER_CONTENT_TYPE:application/json}
+                commandResults:
+                    destination: ${ACT_RB_COMMAND_RESULTS_DEST:commandResults}
+                    group: ${ACT_RB_COMMAND_RESULTS_GROUP:commandResults}
+                    contentType: ${ACT_RB_COMMAND_RESULTS_CONTENT_TYPE:application/json}
+                commandConsumer:
+                    destination: ${ACT_RB_COMMAND_RESULTS_DEST:commandConsumer}
+                    contentType: ${ACT_RB_COMMAND_RESULTS_CONTENT_TYPE:application/json}
+                # Campaign Domain Specific Channels
+                campaignConsumer:
+                    destination: campaigns
+                    contentType: application/json
+                    group: ${ACT_RB_APP_NAME:activiti-campaign} # @XiCheng **left to confirm**
+                rewardConsumer:
+                    destination: rewards
+                    contentType: application/json
+                    group: ${ACT_RB_APP_NAME:activiti-campaign}  # @XiCheng **left to confirm**
+#            binders:  # configure service info of the rabbitmq bound to stream
+#                defaultRabbit:
+#                    type: rabbit
+#                    environment:
+#                        spring:
+#                            rabbitmq:
+#                                host: ${ACT_RABBITMQ_HOST:localhost}
+#                                port: 5672
+#                                username: guest
+#                                password: guest
+#                                virtual-host: /
+    rabbitmq: # also we can add configuration here to bound with message broker.
+      host: ${ACT_RABBITMQ_HOST:localhost}
+      port: 5672
+      username: guest
+      password: guest
+# Campaing Specific Configuration
+campaign:
+    topic: ${CAMPAIGN_TOPIC:activiti}
+    lang: en
 server:
     port: 8081
 
@@ -145,3 +189,4 @@ jhipster:
 # ===================================================================
 
 # application:
+
