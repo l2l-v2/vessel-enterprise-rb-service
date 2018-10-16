@@ -21,6 +21,8 @@ eureka:
         instanceId: vessel:${spring.application.instance-id:${random.value}}
 
 spring:
+    profiles:
+      active: test
     application:
         name: vessel
     cache:

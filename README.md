@@ -14,7 +14,16 @@ To start your application in the dev profile, simply run:
 
 For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
 
-
+---
+### Database
+- We use H2-Disk as development dasebase.
+    ```bash
+    # you can navigate to H2 console to inspect the database
+    localhost:808x/h2-console
+    # login with defaut username and password(here pwd is empty)
+    vessel:<empty>
+    ```    
+---
 
 ## Building for production
 
