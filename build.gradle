@@ -42,7 +42,7 @@ dependencyManagement {
   imports {
     mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
     //jhipster-needle-gradle-dependency-management - JHipster will add additional dependencies management here
-    mavenBom 'org.activiti.cloud:activiti-cloud-dependencies:'+activiti_cloud_version
+    mavenBom 'org.activiti.cloud:activiti-cloud-starter-runtime-bundle:'+activiti_cloud_version
   }
 }
 
@@ -171,9 +171,7 @@ repositories {
 dependencies {
     // Use ", version: jhipster_dependencies_version, changing: true" if you want
     // to use a SNAPSHOT release instead of a stable release
-    compile ("io.github.jhipster:jhipster-framework"){
-        exclude group: 'io.springfox'
-    }
+    compile "io.github.jhipster:jhipster-framework"
     compile "org.springframework.boot:spring-boot-starter-cache"
     compile "io.dropwizard.metrics:metrics-core"
     compile "io.dropwizard.metrics:metrics-json"
@@ -259,15 +257,15 @@ dependencies {
     testCompile "com.h2database:h2"
     liquibaseRuntime "com.h2database:h2"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+    // Minimum set of dependencies of Runtime Bundle
+    compile "org.activiti.cloud:activiti-cloud-services-api"
+//    compile "org.activiti:activiti-engine"
+    compile "org.activiti:activiti-spring-boot-starter"
+    compile "org.activiti.cloud:activiti-cloud-services-events"
+    compile "org.activiti.cloud:activiti-cloud-services-rest-impl"
+    compile "org.activiti.cloud:activiti-cloud-services-connectors"
+    compile "org.activiti.cloud:activiti-cloud-services-subscriptions"
 
-    // https://mvnrepository.com/artifact/org.activiti.cloud/activiti-cloud-starter-runtime-bundle
-    compile("org.activiti.cloud:activiti-cloud-starter-runtime-bundle"){
-        exclude module: 'activiti-cloud-services-identity-keycloak'
-        exclude module: 'activiti-cloud-services-common-security-keycloak'
-        exclude module: 'activiti-cloud-services-metadata'
-        exclude module: 'spring-cloud-config-client'
-//        exclude group: 'io.springfox'
-    }
 
 }
 
