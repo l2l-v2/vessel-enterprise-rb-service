@@ -6,6 +6,8 @@ import com.l2l.enterprise.vessel.connectors.CampaignMessageChannels;
 import com.l2l.enterprise.vessel.connectors.RewardMessageChannels;
 import io.github.jhipster.config.JHipsterConstants;
 import org.activiti.cloud.services.events.ProcessEngineChannels;
+import org.activiti.spring.boot.EndpointAutoConfiguration;
+import org.activiti.spring.boot.ProcessEngineAutoConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,9 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
-@SpringBootApplication
+@SpringBootApplication(
+    exclude = {EndpointAutoConfiguration.class}
+)
 @EnableDiscoveryClient
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 @EnableBinding({ProcessEngineChannels.class, CampaignMessageChannels.class, RewardMessageChannels.class})

@@ -65,6 +65,7 @@ spring:
             hibernate.cache.hazelcast.instance_name: vessel
             hibernate.cache.use_minimal_puts: true
             hibernate.cache.hazelcast.use_lite_member: true
+            hibernate.hbm2ddl.auto: create # bqzhu +
     liquibase:
         contexts: dev
     mail:
