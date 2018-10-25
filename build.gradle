@@ -266,6 +266,9 @@ dependencies {
     compile "org.activiti.cloud:activiti-cloud-services-connectors"
     compile "org.activiti.cloud:activiti-cloud-services-subscriptions"
 
+    compile "org.codehaus.groovy:groovy:${groovy_version}"
+    compile "org.codehaus.groovy:groovy-jsr223:${groovy_version}"
+
 
 }
 

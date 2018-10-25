@@ -16,9 +16,7 @@ public class L2LServiceTaskParseHandler extends ServiceTaskParseHandler {
 
     protected void executeParse(BpmnParse bpmnParse, ServiceTask serviceTask) {
         log.debug("---executeParse---");
-        Map<String , List<ExtensionAttribute>> attributes = serviceTask.getAttributes();
-        List<ExtensionAttribute> list = attributes.get("annotation");
-        log.debug("name : "+list.get(0).getName()+ " , value : "+list.get(0).getValue());
+
         if (StringUtils.isNotEmpty(serviceTask.getType())) {
             this.createActivityBehaviorForServiceTaskType(bpmnParse, serviceTask);
         } else if (ImplementationType.IMPLEMENTATION_TYPE_CLASS.equalsIgnoreCase(serviceTask.getImplementationType())) {
@@ -33,28 +31,37 @@ public class L2LServiceTaskParseHandler extends ServiceTaskParseHandler {
             this.createDefaultServiceTaskActivityBehavior(bpmnParse, serviceTask);
         }
 
-        //add ExecutionListeners
-        if(list.get(0).getValue().equals("Pre")){
-            ActivitiListener activitiListener = new ActivitiListener();
-            activitiListener.setEvent("start");
-            List<FieldExtension> fieldExtensions = new ArrayList<FieldExtension>();
-            FieldExtension field = new FieldExtension();
-            field.setFieldName("Type");
-            field.setStringValue("PreProcessor");
-            fieldExtensions.add(field);
-            activitiListener.setFieldExtensions(fieldExtensions);
-            activitiListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
-            activitiListener.setImplementation("${l2LAnnotationListener}");
-            serviceTask.getExecutionListeners().add((activitiListener));
-        }else if(list.get(0).getValue().equals("Post")){
-            ActivitiListener activitiListener = new ActivitiListener();
-            activitiListener.setEvent("end");
-            activitiListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
-            activitiListener.setImplementation("${l2LAnnotationListener}");
-            serviceTask.getExecutionListeners().add((activitiListener));
-        }else{
-            log.debug("unsupported type annotation executor");
-        }
+        Map<String , List<ExtensionElement>> extensionElements = serviceTask.getExtensionElements();
+        extensionElements.forEach((key , val1)->{
+            if(AnnotationConstants.ELEMENT_NAME.equals(key)){
+                val1.forEach(val2->{
+                    val2.getAttributes().values().forEach(extensionAttributes -> {
+                        extensionAttributes.forEach(extensionAttribute -> {
+                            String attrVal = extensionAttribute.getValue().trim();
+                            String attrName = extensionAttribute.getName().trim();
+                            if(AnnotationConstants.ATTR_POINTCUT.equals(attrName)) {
+                                //add ExecutionListeners
+                                if (AnnotationConstants.PRE_PROCESSOR.equals(attrVal)) {
+                                    ActivitiListener activitiListener = new ActivitiListener();
+                                    activitiListener.setEvent("start");
+                                    activitiListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
+                                    activitiListener.setImplementation(AnnotationConstants.DELEGATE_EXPRESSION);
+                                    serviceTask.getExecutionListeners().add((activitiListener));
+                                } else if (AnnotationConstants.POST_PROCESSOR.equals(attrVal)) {
+                                    ActivitiListener activitiListener = new ActivitiListener();
+                                    activitiListener.setEvent("end");
+                                    activitiListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
+                                    activitiListener.setImplementation(AnnotationConstants.DELEGATE_EXPRESSION);
+                                    serviceTask.getExecutionListeners().add((activitiListener));
+                                } else {
+                                    log.debug("unsupported type annotation executor");
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+        });
 
     }
 }

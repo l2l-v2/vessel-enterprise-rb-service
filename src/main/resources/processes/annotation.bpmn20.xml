@@ -7,7 +7,12 @@
              expressionLanguage="http://www.w3.org/1999/XPath" id="m1540111006206" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
     <startEvent id="_2" name="StartEvent"/>
-    <serviceTask id="_3" l2l:annotation="Pre" implementation="needed" name="ServiceTask"/>
+      <serviceTask id="_3"  implementation="needed" name="ServiceTask">
+       <extensionElements>
+           <l2l:annotation language="groovy" pointcut="PreProcessor" script="println 'Hello groovy script!'" ></l2l:annotation>
+       </extensionElements>
+      </serviceTask>
+
     <userTask activiti:assignee="admin"  id="_4" name="UserTask"/>
     <endEvent id="_5" name="EndEvent"/>
     <sequenceFlow id="_6" sourceRef="_2" targetRef="_3"/>

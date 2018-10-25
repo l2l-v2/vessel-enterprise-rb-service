@@ -7,11 +7,17 @@
              expressionLanguage="http://www.w3.org/1999/XPath" id="m1540111006206" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
     <startEvent id="_2" name="StartEvent"/>
-    <serviceTask id="serviceTask1" l2l:annotation="script" implementation="needed" name="ServiceTask"/>
+      <serviceTask id="_3"  implementation="needed" name="ServiceTask">
+       <extensionElements>
+           <l2l:annotation l2l:id="annotation_1"  pointcut="PreProcessor" script="println 'Hello groovy script!'" >
+           </l2l:annotation>
+       </extensionElements>
+      </serviceTask>
+
     <userTask activiti:assignee="admin"  id="_4" name="UserTask"/>
     <endEvent id="_5" name="EndEvent"/>
-    <sequenceFlow id="_6" sourceRef="_2" targetRef="serviceTask1"/>
-    <sequenceFlow id="_7" sourceRef="serviceTask1" targetRef="_4"/>
+    <sequenceFlow id="_6" sourceRef="_2" targetRef="_3"/>
+    <sequenceFlow id="_7" sourceRef="_3" targetRef="_4"/>
     <sequenceFlow id="_8" sourceRef="_4" targetRef="_5"/>
   </process>
   <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
@@ -22,7 +28,7 @@
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="serviceTask1" id="Shape-_3">
+      <bpmndi:BPMNShape bpmnElement="_3" id="Shape-_3">
         <omgdc:Bounds height="55.0" width="85.0" x="125.0" y="105.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>

@@ -5,6 +5,7 @@ import com.l2l.enterprise.vessel.extension.activiti.parser.L2LServiceTaskXMLConv
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.ExtensionAttribute;
+import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -50,7 +51,7 @@ public class ActivitiUnitTest {
     }
 
     @Test
-    public void TestServiceTaskAnnotation(){
+    public void TestServiceTaskAnnotationAttr(){
         //process document
         InputStream xmlStream = this.getClass().getClassLoader().getResourceAsStream("annotation.bpmn");
         assertNotNull(xmlStream);
@@ -64,4 +65,30 @@ public class ActivitiUnitTest {
         List<ExtensionAttribute> list = attributes.get("annotation");
         log.debug("name : "+list.get(0).getName()+ " , value : "+list.get(0).getValue());
     }
+
+    @Test
+    public void ServiceTaskExtensionElementUnitTest(){
+        //process document
+        InputStream xmlStream = this.getClass().getClassLoader().getResourceAsStream("annotation.bpmn20.xml");
+        assertNotNull(xmlStream);
+        InputStreamSource xmlSource = new InputStreamSource(xmlStream);
+        // Instantiate the BpmnXMLConverter
+        BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
+        BpmnXMLConverter.addConverter(new L2LServiceTaskXMLConverter());
+        BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(xmlSource , true , false , "UTF-8");
+        FlowElement flowElement = bpmnModel.getProcesses().get(0).getFlowElement("_3");
+        Map<String , List<ExtensionElement>> extensionElements = flowElement.getExtensionElements();
+        extensionElements.forEach((key , val1)->{
+            if(key.equals("annotation")){
+                val1.forEach(val2->{
+                    val2.getAttributes().values().forEach(extensionAttributes -> {
+                        extensionAttributes.forEach(extensionAttribute -> {
+                            System.out.println(extensionAttribute.getName()+" : "+extensionAttribute.getValue());
+                        });
+                    });
+                });
+            }
+        });
+    }
+
 }
