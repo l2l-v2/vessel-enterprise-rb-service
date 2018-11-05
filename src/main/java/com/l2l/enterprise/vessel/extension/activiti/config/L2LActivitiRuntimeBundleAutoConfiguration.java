@@ -1,4 +1,4 @@
-package com.l2l.enterprise.vessel.config;
+package com.l2l.enterprise.vessel.extension.activiti.config;
 
 import com.l2l.enterprise.vessel.service.ListObjects;
 import com.l2l.enterprise.vessel.service.TestListObject;

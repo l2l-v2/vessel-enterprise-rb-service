@@ -1,8 +1,10 @@
-package com.l2l.enterprise.vessel.config;
+package com.l2l.enterprise.vessel.extension.activiti.config;
 
 
+import com.l2l.enterprise.vessel.extension.activiti.behavior.L2LActivityBehaviorFactory;
 import com.l2l.enterprise.vessel.extension.activiti.parser.L2LServiceTaskParseHandler;
 import com.l2l.enterprise.vessel.extension.activiti.parser.L2LServiceTaskXMLConverter;
+import com.l2l.enterprise.vessel.extension.activiti.parser.L2LTimerDefinitionParseHandler;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.engine.impl.bpmn.parser.BpmnParse;
 import org.activiti.engine.impl.bpmn.parser.BpmnParser;
@@ -40,6 +42,7 @@ public class L2LProcessEngineAutoConfiguration extends AbstractProcessEngineAuto
     @Bean
     @ConditionalOnMissingBean
     public SpringProcessEngineConfiguration springProcessEngineConfiguration(DataSource dataSource, PlatformTransactionManager transactionManager, SpringAsyncExecutor springAsyncExecutor) throws IOException {
+        springAsyncExecutor.setDefaultTimerJobAcquireWaitTimeInMillis(5000);
         SpringProcessEngineConfiguration conf =  this.baseSpringProcessEngineConfiguration(dataSource, transactionManager, springAsyncExecutor, this.userGroupManager);
 //        conf.setBpmnParseFactory(new BpmnParseFactory() {
 //            @Override
@@ -49,9 +52,19 @@ public class L2LProcessEngineAutoConfiguration extends AbstractProcessEngineAuto
 //        });
         // replace the default 'ServiceTaskXMLConverter' with custom one.
         BpmnXMLConverter.addConverter(new L2LServiceTaskXMLConverter());
+        // customize the default activity behavior factory
+        L2LActivityBehaviorFactory l2LActivityBehaviorFactory = new L2LActivityBehaviorFactory();
+        conf.setActivityBehaviorFactory(l2LActivityBehaviorFactory);
+        // customize the parse handlers.
         List<BpmnParseHandler> customDefaultBpmnParseHandlers = new ArrayList<BpmnParseHandler>();
         customDefaultBpmnParseHandlers.add(new L2LServiceTaskParseHandler());
+        customDefaultBpmnParseHandlers.add(new L2LTimerDefinitionParseHandler());
         conf.setCustomDefaultBpmnParseHandlers(customDefaultBpmnParseHandlers);
+
+        // The asynchronous job executor is disabled by default and needs to be activated.
+//        conf.setAsyncExecutorDefaultTimerJobAcquireWaitTime(5000);
+        conf.setAsyncExecutorActivate(true);
+
         return conf;
     }
 }

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="timer-process" name="Custom-Timer-Process" isExecutable="true">
+    <startEvent id="startEvent1" name="start-event1"/>
+    <userTask id="userTask1" name="timer-usertask1" activiti:assignee="admin">
+    </userTask>
+    <sequenceFlow id="sid-F58717AC-10F6-4EB9-A12F-FAA9602A9F15" sourceRef="startEvent1" targetRef="userTask1"/>
+    <scriptTask id="logScript" name="Log Script" scriptFormat="groovy" >
+      <script><![CDATA[println 'hello the custom timer']]></script>
+    </scriptTask>
+    <boundaryEvent id="boundaryEvent1" name="boundary-event1" attachedToRef="userTask1" cancelActivity="false">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="sid-46662B12-1C9F-4284-9D98-FE4A45ACD0AB" sourceRef="userTask1" targetRef="logScript"/>
+    <endEvent id="endEvent1" name="end-event1"/>
+    <sequenceFlow id="sid-B7550E41-394B-42C2-8A54-D54D7124E7B3" sourceRef="logScript" targetRef="endEvent1"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_timer-process">
+    <bpmndi:BPMNPlane bpmnElement="timer-process" id="BPMNPlane_timer-process">
+      <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="30.0" y="175.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask1" id="BPMNShape_userTask1">
+        <omgdc:Bounds height="80.0" width="100.0" x="135.0" y="150.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="logScript" id="BPMNShape_logScript">
+        <omgdc:Bounds height="80.0" width="100.0" x="315.0" y="150.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryEvent1" id="BPMNShape_boundaryEvent1">
+        <omgdc:Bounds height="31.0" width="31.0" x="195.0" y="134.21922638440066"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent1" id="BPMNShape_endEvent1">
+        <omgdc:Bounds height="28.0" width="28.0" x="460.0" y="176.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-F58717AC-10F6-4EB9-A12F-FAA9602A9F15" id="BPMNEdge_sid-F58717AC-10F6-4EB9-A12F-FAA9602A9F15">
+        <omgdi:waypoint x="60.0" y="190.0"/>
+        <omgdi:waypoint x="135.0" y="190.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-B7550E41-394B-42C2-8A54-D54D7124E7B3" id="BPMNEdge_sid-B7550E41-394B-42C2-8A54-D54D7124E7B3">
+        <omgdi:waypoint x="415.0" y="190.0"/>
+        <omgdi:waypoint x="460.0" y="190.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-46662B12-1C9F-4284-9D98-FE4A45ACD0AB" id="BPMNEdge_sid-46662B12-1C9F-4284-9D98-FE4A45ACD0AB">
+        <omgdi:waypoint x="235.0" y="190.0"/>
+        <omgdi:waypoint x="315.0" y="190.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,6 +1,5 @@
-package com.l2l.enterprise.vessel.exstension.activiti.connectors;
+package com.l2l.enterprise.vessel.extension.activiti.connectors;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.l2l.enterprise.vessel.extension.activiti.parser.AnnotationConstants;
 import org.activiti.bpmn.model.ExtensionAttribute;
 import org.activiti.bpmn.model.ExtensionElement;
@@ -8,16 +7,13 @@ import org.activiti.engine.ActivitiException;
 import org.activiti.engine.delegate.BpmnError;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.ExecutionListener;
-import org.activiti.engine.impl.bpmn.helper.ErrorPropagation;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.scripting.ScriptingEngines;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
