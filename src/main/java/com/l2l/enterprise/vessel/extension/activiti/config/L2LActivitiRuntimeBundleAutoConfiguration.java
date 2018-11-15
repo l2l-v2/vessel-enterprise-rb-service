@@ -4,6 +4,7 @@ import com.l2l.enterprise.vessel.service.ListObjects;
 import com.l2l.enterprise.vessel.service.TestListObject;
 import org.activiti.spring.boot.EndpointAutoConfiguration;
 import org.activiti.spring.boot.ProcessEngineAutoConfiguration;
+import org.activiti.spring.identity.ActivitiUserGroupManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,8 +18,8 @@ import java.util.List;
     basePackages = {"org.activiti"} ,
     excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = ProcessEngineAutoConfiguration.class),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = EndpointAutoConfiguration.class)
-
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = EndpointAutoConfiguration.class),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = ActivitiUserGroupManagerImpl.class)
     }
  )
 public class L2LActivitiRuntimeBundleAutoConfiguration {

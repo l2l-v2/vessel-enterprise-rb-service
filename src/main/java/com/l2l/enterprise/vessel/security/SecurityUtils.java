@@ -4,7 +4,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for Spring Security.
@@ -72,5 +74,24 @@ public final class SecurityUtils {
             .map(authentication -> authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority)))
             .orElse(false);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<String> getUserGroups(String s) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return  (List)securityContext.getAuthentication().getAuthorities().stream().filter((a) -> {
+            return a.getAuthority().startsWith("GROUP_");
+        }).map((a) -> {
+            return a.getAuthority().substring(6);
+        }).collect(Collectors.toList());
+    }
+    @SuppressWarnings("unchecked")
+    public static List<String> getUserRoles(String s) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return  (List)securityContext.getAuthentication().getAuthorities().stream().filter((a) -> {
+            return a.getAuthority().startsWith("ROLE_");
+        }).map((a) -> {
+            return a.getAuthority().substring(5);
+        }).collect(Collectors.toList());
     }
 }
