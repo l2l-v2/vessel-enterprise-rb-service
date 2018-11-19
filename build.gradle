@@ -268,12 +268,6 @@ dependencies {
 
     compile "org.codehaus.groovy:groovy:${groovy_version}"
     compile "org.codehaus.groovy:groovy-jsr223:${groovy_version}"
-    // https://mvnrepository.com/artifact/org.activiti/activiti-form-engine
-    compile group: 'org.activiti', name: 'activiti-form-engine', version: '6.0.0'
-    // https://mvnrepository.com/artifact/org.activiti/activiti-form-api
-    compile group: 'org.activiti', name: 'activiti-form-api', version: '6.0.0'
-
-
 
 }
 
@@ -292,8 +286,3 @@ compileJava.dependsOn processResources
 processResources.dependsOn cleanResources,bootBuildInfo
 bootBuildInfo.mustRunAfter cleanResources
 
-task helloworld << {
-    4.times {
-        println 'hello gradle!'
-    }
-}

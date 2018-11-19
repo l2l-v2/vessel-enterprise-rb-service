@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="timer-process" name="Custom-Timer-Process" isExecutable="true">
-    <startEvent id="startEvent1" name="start-event1"/>
+    <startEvent id="startEvent1" name="start-event1">
+        <extensionElements>
+            <activiti:formProperty id="vid" name="vessel  code" type="string" required="true"/>
+        </extensionElements>
+    </startEvent>
     <userTask id="userTask1" name="timer-usertask1" activiti:assignee="admin">
     </userTask>
     <sequenceFlow id="sid-F58717AC-10F6-4EB9-A12F-FAA9602A9F15" sourceRef="startEvent1" targetRef="userTask1"/>
