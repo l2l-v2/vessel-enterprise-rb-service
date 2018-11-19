@@ -7,6 +7,9 @@
         </extensionElements>
     </startEvent>
     <userTask id="userTask1" name="timer-usertask1" activiti:assignee="admin">
+        <extensionElements>
+            <activiti:formProperty id="uservid" name="usertaskvar" type="string" required="true"/>
+        </extensionElements>
     </userTask>
     <sequenceFlow id="sid-F58717AC-10F6-4EB9-A12F-FAA9602A9F15" sourceRef="startEvent1" targetRef="userTask1"/>
     <scriptTask id="logScript" name="Log Script" scriptFormat="groovy" >

@@ -13,4 +13,8 @@ public class FormServiceImpl extends ServiceImpl implements FormService {
     public FormDefinition getStartForm(String processDefinitionId) {
         return (FormDefinition)this.commandExecutor.execute(new GetStartFormCmd(processDefinitionId));
     }
+    @Override
+    public FormDefinition getUserTaskForm(String processDefinitionId,String taskDefinitionKey){
+        return (FormDefinition)this.commandExecutor.execute(new GetTaskFormCmd(processDefinitionId,taskDefinitionKey));
+    }
 }
