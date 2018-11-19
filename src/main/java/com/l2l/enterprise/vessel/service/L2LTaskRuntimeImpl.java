@@ -52,8 +52,10 @@ public class L2LTaskRuntimeImpl implements TaskRuntime {
             if (internalTask == null) {
                 throw new NotFoundException("Unable to find task for the given id: " + taskId + " for user: " + authenticatedUserId + " (with groups: " + userGroups + " & with roles: " + userRoles + ")");
             } else {
+//                internalTask.getTaskDefinitionKey();
                 return this.taskConverter.from(internalTask);
             }
+
         } else {
             throw new IllegalStateException("There is no authenticated user, we need a user authenticated to find tasks");
         }

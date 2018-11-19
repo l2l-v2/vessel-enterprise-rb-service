@@ -15,7 +15,9 @@ import org.activiti.cloud.services.rest.api.resources.ProcessInstanceResource;
 import org.activiti.cloud.services.rest.assemblers.ProcessInstanceResourceAssembler;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.task.TaskQuery;
 import org.activiti.image.exception.ActivitiInterchangeInfoNotFoundException;
 import org.activiti.runtime.api.NotFoundException;
 import org.activiti.runtime.api.ProcessRuntime;
@@ -30,6 +32,9 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class TestController {
@@ -80,11 +85,21 @@ public class TestController {
         return this.resourceAssembler.toResource(this.processRuntime.start(startProcessPayload));
     }
     @RequestMapping(
-        value = {"/v2/form/{processDefinitionId}"},
+        value = {"/v2/startform/{processDefinitionId}"},
         method = {RequestMethod.POST}
     )
     public FormDefinition getStartFormDefinition(@PathVariable("processDefinitionId") String processDefinitionId){
         return this.formService.getStartForm(processDefinitionId);
     }
+    @Autowired
+    TaskService taskService;
+    @RequestMapping("/v2/gettaskform/{taskId}")
+    public FormDefinition gettaskForm(@PathVariable("taskId") String taskId){
+        org.activiti.engine.task.Task internalTask = (org.activiti.engine.task.Task)((TaskQuery)this.taskService.createTaskQuery().taskId(taskId)).singleResult();
+        String taskDefinitionKey = internalTask.getTaskDefinitionKey();
+        String processDefinitionId = internalTask.getProcessDefinitionId();
+        return this.formService.getUserTaskForm(processDefinitionId,taskDefinitionKey);
+    }
+
 
 }
