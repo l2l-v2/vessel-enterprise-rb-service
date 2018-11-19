@@ -5,7 +5,7 @@ import org.activiti.engine.impl.ServiceImpl;
 import org.activiti.engine.impl.cmd.GetBpmnModelCmd;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class FormServiceImpl extends ServiceImpl implements FormService {
     public FormServiceImpl() {
     }

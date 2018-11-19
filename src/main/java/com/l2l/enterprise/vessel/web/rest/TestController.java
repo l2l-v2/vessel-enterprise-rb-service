@@ -14,7 +14,6 @@ import org.activiti.cloud.services.rest.api.resources.ProcessDefinitionResource;
 import org.activiti.cloud.services.rest.api.resources.ProcessInstanceResource;
 import org.activiti.cloud.services.rest.assemblers.ProcessInstanceResourceAssembler;
 import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.image.exception.ActivitiInterchangeInfoNotFoundException;
@@ -40,6 +39,7 @@ public class TestController {
     private final AlfrescoPagedResourcesAssembler<ProcessInstance> pagedResourcesAssembler;
     private final ProcessRuntime processRuntime;
     private final SpringPageConverter pageConverter;
+//    private final RepositoryService;
     @Autowired
     private FormService formService;
     @ExceptionHandler({ActivitiForbiddenException.class})

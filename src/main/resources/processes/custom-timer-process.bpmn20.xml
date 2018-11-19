@@ -14,7 +14,7 @@
     </scriptTask>
     <boundaryEvent id="boundaryEvent1" name="boundary-event1" attachedToRef="userTask1" cancelActivity="false">
       <timerEventDefinition>
-        <timeDuration>PT1M</timeDuration>
+        <timeDuration>PT20M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="sid-46662B12-1C9F-4284-9D98-FE4A45ACD0AB" sourceRef="userTask1" targetRef="logScript"/>

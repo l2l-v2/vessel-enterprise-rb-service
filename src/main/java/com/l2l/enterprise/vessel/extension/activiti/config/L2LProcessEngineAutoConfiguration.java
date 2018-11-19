@@ -2,10 +2,15 @@ package com.l2l.enterprise.vessel.extension.activiti.config;
 
 
 import com.l2l.enterprise.vessel.extension.activiti.behavior.L2LActivityBehaviorFactory;
+import com.l2l.enterprise.vessel.extension.activiti.form.FormService;
+import com.l2l.enterprise.vessel.extension.activiti.form.FormServiceImpl;
 import com.l2l.enterprise.vessel.extension.activiti.parser.L2LServiceTaskParseHandler;
 import com.l2l.enterprise.vessel.extension.activiti.parser.L2LServiceTaskXMLConverter;
 import com.l2l.enterprise.vessel.extension.activiti.parser.L2LTimerDefinitionParseHandler;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.impl.ServiceImpl;
 import org.activiti.engine.impl.bpmn.parser.BpmnParse;
 import org.activiti.engine.impl.bpmn.parser.BpmnParser;
 import org.activiti.engine.impl.cfg.BpmnParseFactory;
@@ -66,5 +71,15 @@ public class L2LProcessEngineAutoConfiguration extends AbstractProcessEngineAuto
         conf.setAsyncExecutorActivate(true);
 
         return conf;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public FormService formService(SpringProcessEngineConfiguration springProcessEngineConfiguration) {
+        FormService formService = new FormServiceImpl();
+        if (formService instanceof ServiceImpl) {
+            ((ServiceImpl)formService).setCommandExecutor(springProcessEngineConfiguration.getCommandExecutor());
+        }
+        return formService;
     }
 }
