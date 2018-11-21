@@ -8,6 +8,8 @@
         <activiti:formProperty id="sailor" name="Sailor" type="string" required="true"/>
         <l2l:annotation>
             "{
+                "id": "GetVesselSchedulerInfo",
+                "name" : "GetVesselSchedulerInfo",
                 "inputVars":[
                     {
                         "name":"vid",
@@ -30,7 +32,10 @@
                 ],
                 "policy":{
                     "id":"GetVesselInfo",
-                    "url":"localhost:8080/policies"
+                    "url":"localhost:8080/policies",
+                    "executor": {
+                        "url" : "localhost:8080/services/Id"
+                    }
                 }
             }"
         </l2l:annotation>
