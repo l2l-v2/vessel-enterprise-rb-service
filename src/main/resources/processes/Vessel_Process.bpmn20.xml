@@ -28,7 +28,10 @@
                         "type": "date"
                     },
                 ],
-                "policy" : "GetVesselInfo"
+                "policy" : {
+                    "id" : GetVesselInfo"
+                    "url" : "localhost:8080/policies"
+                }
             }"
         </l2l:annotation>
       </extensionElements>
