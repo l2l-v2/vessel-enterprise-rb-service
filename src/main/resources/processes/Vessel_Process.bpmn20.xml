@@ -16,11 +16,11 @@
                 ],
                 "outputVars": [
                     {
-                        "name": "dockingEndTime",
+                        "name": "voyagingEndTime",
                         "type": "date",
                      },
                     {
-                        "name": "dockingEndTime",
+                        "name": "anchoringEndTime",
                         "type": "date"
                     },
                     {
