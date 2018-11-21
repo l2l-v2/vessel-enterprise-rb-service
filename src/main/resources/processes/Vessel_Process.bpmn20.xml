@@ -8,29 +8,29 @@
         <activiti:formProperty id="sailor" name="Sailor" type="string" required="true"/>
         <l2l:annotation>
             "{
-                "inputVars": [
+                "inputVars":[
                     {
-                    "name": "vid",
-                    "type": "string",
+                        "name":"vid",
+                        "type":"string"
                     }
                 ],
-                "outputVars": [
+                "outputVars":[
                     {
-                        "name": "voyagingEndTime",
-                        "type": "date",
-                     },
-                    {
-                        "name": "anchoringEndTime",
-                        "type": "date"
+                        "name":"voyagingEndTime",
+                        "type":"date"
                     },
                     {
-                        "name": "dockingEndTime",
-                        "type": "date"
+                        "name":"anchoringEndTime",
+                        "type":"date"
+                    },
+                    {
+                        "name":"dockingEndTime",
+                        "type":"date"
                     }
                 ],
-                "policy" : {
-                    "id" : GetVesselInfo"
-                    "url" : "localhost:8080/policies"
+                "policy":{
+                    "id":"GetVesselInfo",
+                    "url":"localhost:8080/policies"
                 }
             }"
         </l2l:annotation>
