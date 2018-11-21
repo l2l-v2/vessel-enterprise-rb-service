@@ -86,7 +86,7 @@ public class TestController {
     }
     @RequestMapping(
         value = {"/v2/startform/{processDefinitionId}"},
-        method = {RequestMethod.POST}
+        method = {RequestMethod.GET}
     )
     public FormDefinition getStartFormDefinition(@PathVariable("processDefinitionId") String processDefinitionId){
         return this.formService.getStartForm(processDefinitionId);
