@@ -100,6 +100,11 @@ public class TestController {
         String processDefinitionId = internalTask.getProcessDefinitionId();
         return this.formService.getUserTaskForm(processDefinitionId,taskDefinitionKey);
     }
-
+    @Autowired
+    SenderTest senderTest;
+    @RequestMapping("/sender")
+    public void sender(){
+        senderTest.sinkSenderTester();
+    }
 
 }

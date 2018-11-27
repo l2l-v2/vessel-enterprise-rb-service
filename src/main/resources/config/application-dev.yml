@@ -27,6 +27,13 @@ eureka:
             defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: raw-sensor-data
+        output:
+          destination: raw-sensor-data
     profiles:
         active: dev
         include:
