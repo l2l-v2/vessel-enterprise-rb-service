@@ -27,13 +27,6 @@ eureka:
             defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 spring:
-  cloud:
-    stream:
-      bindings:
-        input:
-          destination: raw-sensor-data
-        output:
-          destination: raw-sensor-data
     profiles:
         active: dev
         include:
@@ -104,15 +97,10 @@ spring:
                 commandConsumer:
                     destination: ${ACT_RB_COMMAND_RESULTS_DEST:commandConsumer}
                     contentType: ${ACT_RB_COMMAND_RESULTS_CONTENT_TYPE:application/json}
-                # Campaign Domain Specific Channels
-                campaignConsumer:
-                    destination: campaigns
+                integrationResultsConsumer:
+                    destination: integrationResultsConsumer
                     contentType: application/json
-                    group: ${ACT_RB_APP_NAME:activiti-campaign} # @XiCheng **left to confirm**
-                rewardConsumer:
-                    destination: rewards
-                    contentType: application/json
-                    group: ${ACT_RB_APP_NAME:activiti-campaign}  # @XiCheng **left to confirm**
+                    group: integration # @XiCheng **left to confirm**
 #            binders:  # configure service info of the rabbitmq bound to stream
 #                defaultRabbit:
 #                    type: rabbit
