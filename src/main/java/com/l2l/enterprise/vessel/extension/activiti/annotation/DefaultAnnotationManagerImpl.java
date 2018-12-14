@@ -4,10 +4,15 @@ import com.l2l.enterprise.vessel.extension.activiti.boot.L2LProcessEngineConfigu
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 
 import java.util.List;
+import java.util.Map;
 
 public class DefaultAnnotationManagerImpl implements AnnotationManager {
     protected L2LProcessEngineConfiguration processEngineConfiguration;
-    protected List<Annotation> annotations; //
+    protected List<Annotation> annotations;
+    // distinct annotations by type ...
+    protected Map<String , List<Annotation>> activityAnnotationCache;
+    protected Map<String , List<Annotation>> msgAnnotationCache;
+
     protected Object behavior;
 
     public DefaultAnnotationManagerImpl(){

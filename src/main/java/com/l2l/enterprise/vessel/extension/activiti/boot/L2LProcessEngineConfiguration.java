@@ -19,7 +19,7 @@ import java.util.List;
 
 public class L2LProcessEngineConfiguration extends SpringProcessEngineConfiguration {
     private static Logger log = LoggerFactory.getLogger(L2LProcessEngineConfiguration.class);
-    protected List<Annotation>  annotations;
+    protected List<Annotation>  annotations; // delete
     protected AnnotationManager annotationManager;
     protected ApplicationEventPublisher eventPublisher;
 
