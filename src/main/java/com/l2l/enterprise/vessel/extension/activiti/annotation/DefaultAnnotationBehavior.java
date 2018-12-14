@@ -1,6 +1,9 @@
 package com.l2l.enterprise.vessel.extension.activiti.annotation;
 
+import com.l2l.enterprise.vessel.extension.activiti.agenda.L2LActivitiEngineAgenda;
+import com.l2l.enterprise.vessel.extension.activiti.agenda.L2LContinueProcessOperation;
 import com.l2l.enterprise.vessel.extension.activiti.boot.L2LProcessEngineConfiguration;
+import com.l2l.enterprise.vessel.extension.activiti.config.EventListenerConfiguration;
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 import org.activiti.cloud.services.events.converter.RuntimeBundleInfoAppender;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -10,10 +13,12 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.integration.IntegrationContextEntity;
 import org.activiti.engine.impl.persistence.entity.integration.IntegrationContextManager;
 import org.activiti.runtime.api.model.impl.IntegrationRequestImpl;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 public class DefaultAnnotationBehavior extends AbstractBpmnActivityBehavior {
     private final IntegrationContextManager integrationContextManager;
@@ -21,7 +26,7 @@ public class DefaultAnnotationBehavior extends AbstractBpmnActivityBehavior {
     private final AnnotationContextBuilder annotationContextBuilder;
     private final RuntimeBundleInfoAppender runtimeBundleInfoAppender;
     private final ApplicationContext applicationContext;
-    private Annotation annotation;
+    private static org.slf4j.Logger log = LoggerFactory.getLogger(DefaultAnnotationBehavior.class);
 
 
     public DefaultAnnotationBehavior(IntegrationContextManager integrationContextManager, ApplicationEventPublisher eventPublisher, ApplicationContext applicationContext, AnnotationContextBuilder annotationContextBuilder, RuntimeBundleInfoAppender runtimeBundleInfoAppender) {
@@ -32,13 +37,15 @@ public class DefaultAnnotationBehavior extends AbstractBpmnActivityBehavior {
         this.runtimeBundleInfoAppender = runtimeBundleInfoAppender;
     }
 
-    public void execute(DelegateExecution execution) {
+    public void execute(DelegateExecution execution,Annotation annotation) {
         IntegrationContextEntity integrationContext = this.storeIntegrationContext(execution);
-        this.publishSpringEvent(execution, integrationContext);
+        this.publishSpringEvent(execution, integrationContext,annotation);
+        log.info("annotationbehavior execute");
+
     }
 
-    private void publishSpringEvent(DelegateExecution execution, IntegrationContextEntity integrationContext) {
-        IntegrationRequestImpl integrationRequest = new IntegrationRequestImpl(this.annotationContextBuilder.from(integrationContext, execution ,annotation));
+    private void publishSpringEvent(DelegateExecution execution, IntegrationContextEntity integrationContext,Annotation annotation) {
+        AnnotationIntegrationRequestImpl integrationRequest = new AnnotationIntegrationRequestImpl(this.annotationContextBuilder.from(integrationContext, execution ,annotation));
         this.runtimeBundleInfoAppender.appendRuntimeBundleInfoTo(integrationRequest);
         this.eventPublisher.publishEvent(integrationRequest);
     }
@@ -59,24 +66,23 @@ public class DefaultAnnotationBehavior extends AbstractBpmnActivityBehavior {
         return integrationContext;
     }
 
-    public void trigger(DelegateExecution execution, String signalEvent, Object signalData) {
-        // After the sync request corresponding to the current annotation is replied from third party , it should be deleted.
+//    public void trigger(DelegateExecution execution,String integrationContextEntityId, Object integrationContextEntity) {
+//        // After the sync request corresponding to the current annotation is replied from third party , it should be deleted.
+//
+////        if(Context.getProcessEngineConfiguration() instanceof L2LProcessEngineConfiguration){
+////            ((L2LProcessEngineConfiguration) Context.getProcessEngineConfiguration())
+////                .getAnnotationManager().getAnnotations()
+////                .remove(annotation);
+////         continuing running the current execution which the annotation attached.
+//        ((L2LActivitiEngineAgenda)Context.getAgenda()).planintegrationContextEntityContinueProcessOperation((ExecutionEntity)execution,(IntegrationContextEntity) integrationContextEntity);
+//
+//    }
 
-        if(Context.getProcessEngineConfiguration() instanceof L2LProcessEngineConfiguration){
-            ((L2LProcessEngineConfiguration) Context.getProcessEngineConfiguration())
-                .getAnnotationManager().getAnnotations()
-                .remove(annotation);
-        }
-        // continuing running the current execution which the annotation attached.
-        Context.getAgenda().planContinueProcessOperation((ExecutionEntity)execution);
-
-    }
-
-    public Annotation getAnnotation() {
-        return annotation;
-    }
-
-    public void setAnnotation(Annotation annotation) {
-        this.annotation = annotation;
-    }
+//    public Annotation getAnnotation() {
+//        return annotation;
+//    }
+//
+//    public void setAnnotation(Annotation annotation) {
+//        this.annotation = annotation;
+//    }
 }

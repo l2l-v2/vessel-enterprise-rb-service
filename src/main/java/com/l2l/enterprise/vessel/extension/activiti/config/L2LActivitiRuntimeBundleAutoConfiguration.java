@@ -9,6 +9,7 @@ import org.activiti.cloud.services.events.converter.RuntimeBundleInfoAppender;
 import org.activiti.engine.impl.delegate.ActivityBehavior;
 import org.activiti.engine.impl.persistence.entity.integration.IntegrationContextManager;
 import org.activiti.runtime.api.connector.IntegrationContextBuilder;
+import org.activiti.services.connectors.IntegrationRequestSender;
 import org.activiti.spring.boot.EndpointAutoConfiguration;
 import org.activiti.spring.boot.ProcessEngineAutoConfiguration;
 import org.activiti.spring.identity.ActivitiUserGroupManagerImpl;
@@ -28,7 +29,8 @@ import java.util.List;
     excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = ProcessEngineAutoConfiguration.class),
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = EndpointAutoConfiguration.class),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = ActivitiUserGroupManagerImpl.class)
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = ActivitiUserGroupManagerImpl.class),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE , value = IntegrationRequestSender.class)
     }
  )
 public class L2LActivitiRuntimeBundleAutoConfiguration {

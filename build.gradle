@@ -282,9 +282,6 @@ wrapper {
 task stage(dependsOn: 'bootWar') {
 }
 
-test {
-    useJUnitPlatform()
-}
 
 compileJava.dependsOn processResources
 processResources.dependsOn cleanResources,bootBuildInfo

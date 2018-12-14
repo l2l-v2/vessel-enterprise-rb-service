@@ -97,8 +97,8 @@ spring:
                 commandConsumer:
                     destination: ${ACT_RB_COMMAND_RESULTS_DEST:commandConsumer}
                     contentType: ${ACT_RB_COMMAND_RESULTS_CONTENT_TYPE:application/json}
-                integrationResultsConsumer:
-                    destination: integrationResultsConsumer
+                AnnotationIntegrationResultsConsumer:
+                    destination: AnnotationIntegrationResultsConsumer
                     contentType: application/json
                     group: integration # @XiCheng **left to confirm**
 #            binders:  # configure service info of the rabbitmq bound to stream

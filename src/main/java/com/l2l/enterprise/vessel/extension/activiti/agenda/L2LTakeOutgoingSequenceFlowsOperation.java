@@ -4,70 +4,61 @@ import com.l2l.enterprise.vessel.extension.activiti.annotation.DefaultAnnotation
 import com.l2l.enterprise.vessel.extension.activiti.boot.L2LProcessEngineConfiguration;
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 import com.l2l.enterprise.vessel.extension.activiti.parser.AnnotationConstants;
+import org.activiti.bpmn.model.Activity;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.engine.impl.agenda.ContinueProcessOperation;
+import org.activiti.bpmn.model.FlowNode;
+import org.activiti.bpmn.model.SequenceFlow;
+import org.activiti.engine.impl.agenda.TakeOutgoingSequenceFlowsOperation;
 import org.activiti.engine.impl.delegate.ActivityBehavior;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.integration.IntegrationContextEntity;
-import org.activiti.engine.impl.persistence.entity.integration.IntegrationContextEntityImpl;
-import org.activiti.engine.integration.IntegrationContextService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class L2LContinueProcessOperation extends ContinueProcessOperation {
+public class L2LTakeOutgoingSequenceFlowsOperation extends TakeOutgoingSequenceFlowsOperation {
     private static Logger logger = LoggerFactory.getLogger(L2LContinueProcessOperation.class);
     private IntegrationContextEntity integrationContextEntity;
 
-    public L2LContinueProcessOperation(CommandContext commandContext, ExecutionEntity execution, boolean forceSynchronousOperation, boolean inCompensation) {
-        super(commandContext, execution, forceSynchronousOperation, inCompensation);
+    public L2LTakeOutgoingSequenceFlowsOperation(CommandContext commandContext, ExecutionEntity executionEntity, boolean evaluateConditions) {
+        super(commandContext, executionEntity, evaluateConditions);
     }
-
-    public L2LContinueProcessOperation(CommandContext commandContext, ExecutionEntity execution, IntegrationContextEntity integrationContextEntity) {
-        super(commandContext, execution);
+    public L2LTakeOutgoingSequenceFlowsOperation(CommandContext commandContext, ExecutionEntity executionEntity, boolean evaluateConditions,IntegrationContextEntity integrationContextEntity){
+        super(commandContext, executionEntity, evaluateConditions);
         this.integrationContextEntity = integrationContextEntity;
     }
-    public L2LContinueProcessOperation(CommandContext commandContext, ExecutionEntity execution) {
-        super(commandContext, execution);
-
-    }
-
-
     public void run() {
         FlowElement currentFlowElement = this.getCurrentFlowElement(this.execution);
 //        IntegrationContextEntity integrationContextEntity = this.integrationContextService.findById(integrationResult.getIntegrationContext().getId());
-        Annotation tAn = acquirePreAnnotations(currentFlowElement , execution);
+        Annotation tAn = acquirePostAnnotations(currentFlowElement , execution);
         if(tAn != null){
-            enterPreAnnotation(tAn);
+            enterPostAnnotation(tAn);
         }else{
             super.run();
         }
     }
 
-
-    protected  Annotation acquirePreAnnotations(FlowElement flowNode , ExecutionEntity execution){
+    protected Annotation acquirePostAnnotations(FlowElement flowNode , ExecutionEntity execution){
         String pdId = execution.getProcessDefinitionId();
-        List<Annotation> preAns = new ArrayList<Annotation>();
-        List<Annotation> usedAns = new ArrayList<Annotation>();
-        if(this.commandContext.getProcessEngineConfiguration() instanceof  L2LProcessEngineConfiguration){
-            preAns = ((L2LProcessEngineConfiguration) this.commandContext.getProcessEngineConfiguration()).getAnnotationManager().getAnnotations()
+        List<Annotation> postAns = new ArrayList<Annotation>();
+        if(this.commandContext.getProcessEngineConfiguration() instanceof L2LProcessEngineConfiguration){
+            postAns = ((L2LProcessEngineConfiguration) this.commandContext.getProcessEngineConfiguration()).getAnnotationManager().getAnnotations()
                 .stream().filter( an -> {
                     boolean selected = false;
                     if(integrationContextEntity == null){
                         selected = (
-                            AnnotationConstants.PRE_PROCESSOR.equals(an.getPointcutType()) &&
-                            an.getTargetElementId().equals(flowNode.getId()) &&
-                            an.getProcessDefinitionId().equals(execution.getProcessDefinitionId()));
+                            AnnotationConstants.POST_PROCESSOR.equals(an.getPointcutType()) &&
+                                an.getTargetElementId().equals(flowNode.getId()) &&
+                                an.getProcessDefinitionId().equals(execution.getProcessDefinitionId()));
                     }else {
                         selected = (!this.integrationContextEntity.getFlowNodeId().equals(an.getTargetElementId())&&
                             !this.integrationContextEntity.getProcessDefinitionId().equals(an.getProcessDefinitionId())&&
                             !this.integrationContextEntity.getExecutionId().equals((this.execution.getId())) &&
-                            AnnotationConstants.PRE_PROCESSOR.equals(an.getPointcutType()) &&
+                            AnnotationConstants.POST_PROCESSOR.equals(an.getPointcutType()) &&
                             an.getTargetElementId().equals(flowNode.getId()) &&
                             an.getProcessDefinitionId().equals(execution.getProcessDefinitionId()));
 
@@ -76,11 +67,10 @@ public class L2LContinueProcessOperation extends ContinueProcessOperation {
 
                 }).collect(Collectors.toList());
         }
-        logger.info(preAns.toString());
-        if(preAns.size() > 0){
+        if(postAns.size() > 0){
             // Initially , supporting  only one annotation of specified 'pointcut' type on the FlowElement. Indeed we can support more than one.
             //Here we take the first from the annotation queue on the current flowElement.
-            Annotation tAn = preAns.get(0);
+            Annotation tAn = postAns.get(0);
             return tAn;
         }else{
             logger.debug("No pre-annotaions is attached to the FlowElement {}" , flowNode.getId());
@@ -88,7 +78,7 @@ public class L2LContinueProcessOperation extends ContinueProcessOperation {
         return null;
     }
 
-    protected  void enterPreAnnotation(Annotation currentAnnotation){
+    protected  void enterPostAnnotation(Annotation currentAnnotation){
         if(currentAnnotation.getDestination() != null){
             if(this.commandContext.getProcessEngineConfiguration() instanceof L2LProcessEngineConfiguration){
                 ActivityBehavior annotationBehavior = (ActivityBehavior) ((L2LProcessEngineConfiguration) this.commandContext.getProcessEngineConfiguration())
@@ -101,5 +91,4 @@ public class L2LContinueProcessOperation extends ContinueProcessOperation {
             logger.debug("Now , Only third-party delivery is supported");
         }
     }
-
 }

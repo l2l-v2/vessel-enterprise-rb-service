@@ -4,7 +4,8 @@
     <startEvent id="_2" name="StartEvent"/>
     <serviceTask activiti:exclusive="true" id="_3" implementation="needed"  name="ServiceTask">
       <extensionElements>
-        <l2l:annotation id="anno_test"  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>
+        <l2l:annotation id="anno_test1"  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>
+          <l2l:annotation id="anno_test2"  name="ForColdChain" implementationType="globalType" pointcutType="PostProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>
       </extensionElements>
     </serviceTask>
     <userTask activiti:assignee="admin" activiti:exclusive="true" id="_4" name="UserTask"/>

@@ -10,23 +10,24 @@ public class AnnotationContextBuilder {
     public AnnotationContextBuilder() {
     }
 
-    public IntegrationContext from(IntegrationContextEntity integrationContextEntity, DelegateExecution execution , Annotation annotation) {
-        IntegrationContextImpl integrationContext = this.buildFromExecution(execution , annotation);
+    public AnnotationIntergrationContextImpl from(IntegrationContextEntity integrationContextEntity, DelegateExecution execution , Annotation annotation) {
+        AnnotationIntergrationContextImpl integrationContext = this.buildFromExecution(execution , annotation);
         integrationContext.setId(integrationContextEntity.getId());
         return integrationContext;
     }
 
-    public IntegrationContext from(DelegateExecution execution, Annotation annotation) {
-        IntegrationContextImpl integrationContext = this.buildFromExecution(execution, annotation);
+    public AnnotationIntergrationContextImpl from(DelegateExecution execution, Annotation annotation) {
+        AnnotationIntergrationContextImpl integrationContext = this.buildFromExecution(execution, annotation);
         return integrationContext;
     }
-    private IntegrationContextImpl buildFromExecution(DelegateExecution execution  , Annotation annotation) {
-        IntegrationContextImpl integrationContext = new IntegrationContextImpl();
+    private AnnotationIntergrationContextImpl buildFromExecution(DelegateExecution execution  , Annotation annotation) {
+        AnnotationIntergrationContextImpl integrationContext = new AnnotationIntergrationContextImpl();
         integrationContext.setProcessInstanceId(execution.getProcessInstanceId());
         integrationContext.setProcessDefinitionId(execution.getProcessDefinitionId());
         integrationContext.setActivityElementId(annotation.getTargetElementId());
-        integrationContext.setConnectorType((annotation.getDestination()));
+        integrationContext.setConnectorType((annotation.getDestination()));//connectortype 是目的第三方
         integrationContext.setInBoundVariables(execution.getVariables());
+        integrationContext.setAnnotation(annotation);
         return integrationContext;
     }
 }

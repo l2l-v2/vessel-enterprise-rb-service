@@ -14,7 +14,7 @@ public class Annotation {
     protected String script;
     private String processDefinitionId;
     protected String targetElementId;
-    protected List<String> inputVariables = new ArrayList();
+    protected List<String> inputVariables = new ArrayList();//map
     protected List<String> outputVariables = new ArrayList();
 
     public Annotation(){
