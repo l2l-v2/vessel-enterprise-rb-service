@@ -12,7 +12,9 @@ import org.activiti.cloud.services.core.pageable.SpringPageConverter;
 import org.activiti.cloud.services.rest.api.ProcessDefinitionController;
 import org.activiti.cloud.services.rest.api.resources.ProcessDefinitionResource;
 import org.activiti.cloud.services.rest.api.resources.ProcessInstanceResource;
+import org.activiti.cloud.services.rest.api.resources.TaskResource;
 import org.activiti.cloud.services.rest.assemblers.ProcessInstanceResourceAssembler;
+import org.activiti.cloud.services.rest.assemblers.TaskResourceAssembler;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
@@ -21,9 +23,13 @@ import org.activiti.engine.task.TaskQuery;
 import org.activiti.image.exception.ActivitiInterchangeInfoNotFoundException;
 import org.activiti.runtime.api.NotFoundException;
 import org.activiti.runtime.api.ProcessRuntime;
+import org.activiti.runtime.api.TaskRuntime;
 import org.activiti.runtime.api.model.ProcessDefinition;
 import org.activiti.runtime.api.model.ProcessInstance;
+import org.activiti.runtime.api.model.Task;
+import org.activiti.runtime.api.model.builders.TaskPayloadBuilder;
 import org.activiti.runtime.api.model.impl.BPMNActivityImpl;
+import org.activiti.runtime.api.model.payloads.CompleteTaskPayload;
 import org.activiti.runtime.api.model.payloads.StartProcessPayload;
 import org.activiti.runtime.api.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +90,25 @@ public class TestController {
         StartProcessPayload startProcessPayload = new StartProcessPayload(processDefinitionId , processDefinitionKey , processInstanceName , null , null);
         return this.resourceAssembler.toResource(this.processRuntime.start(startProcessPayload));
     }
+    @Autowired
+    TaskRuntime taskRuntime;
+    @Autowired
+    TaskResourceAssembler taskResourceAssembler;
+    @RequestMapping(
+        value = {"v2/{taskId}/complete"},
+        method = {RequestMethod.POST}
+    )
+    public TaskResource completeTask(@PathVariable String taskId, @RequestBody(required = false) CompleteTaskPayload completeTaskPayload) {
+        if (completeTaskPayload == null) {
+            completeTaskPayload = TaskPayloadBuilder.complete().withTaskId(taskId).build();
+        } else {
+            completeTaskPayload.setTaskId(taskId);
+        }
+
+        Task task = this.taskRuntime.complete(completeTaskPayload);
+        return this.taskResourceAssembler.toResource(task);
+    }
+
     @RequestMapping(
         value = {"/v2/startform/{processDefinitionId}"},
         method = {RequestMethod.GET}

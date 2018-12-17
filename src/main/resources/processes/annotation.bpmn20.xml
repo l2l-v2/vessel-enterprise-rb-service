@@ -2,13 +2,13 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:l2l="http://www.l2l.com" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1540111006206" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="annotation_process_1" isClosed="false" isExecutable="true" processType="None">
     <startEvent id="_2" name="StartEvent"/>
-    <serviceTask activiti:exclusive="true" id="_3" implementation="needed"  name="ServiceTask">
-      <extensionElements>
-        <l2l:annotation id="anno_test1"  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>
-          <l2l:annotation id="anno_test2"  name="ForColdChain" implementationType="globalType" pointcutType="PostProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>
-      </extensionElements>
+    <serviceTask id="_3" implementation="defaultServiceTaskConnector"  name="ServiceTask">
+        <extensionElements>
+            <l2l:annotation id="anno_test1"  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>
+            <l2l:annotation id="anno_test2"  name="ForColdChain" implementationType="globalType" pointcutType="PostProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>
+        </extensionElements>
     </serviceTask>
-    <userTask activiti:assignee="admin" activiti:exclusive="true" id="_4" name="UserTask"/>
+    <userTask activiti:assignee="admin"  id="_4" name="UserTask"/>
     <endEvent id="_5" name="EndEvent"/>
     <sequenceFlow id="_6" sourceRef="_2" targetRef="_3"/>
     <sequenceFlow id="_7" sourceRef="_3" targetRef="_4"/>
