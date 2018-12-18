@@ -197,3 +197,34 @@ management:
       show-details: always
     activiti:
       enabled: true
+
+
+#
+# host,port
+#
+
+org:
+    id: VA1001
+    host: 10.131.245.96
+    port: 9001
+    projectId: vessel-A
+    vmcContextPath: http://10.131.245.96:9041/vmc
+    lvcContextPath: http://10.131.245.96:9044/lvc
+    vdevContextPath: http://10.131.245.96:9051/vesselIoT
+
+
+#
+#repository file
+#
+locations:
+    fileName: locations.csv
+
+#
+#AWSIOT
+#
+awsiot:
+    clientEndpoint: a1cf6tovfozpv3.iot.cn-north-1.amazonaws.com.cn
+    clientId: vessel-enterprise
+    certificateFile: /home/cx/Desktop/devKeys/413362260/certificate.pem.crt
+    privateKeyFile: /home/cx/Desktop/devKeys/413362260/private.pem.key
+    iotSettings: iotSettings.csv

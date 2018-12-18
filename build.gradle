@@ -171,6 +171,15 @@ repositories {
 dependencies {
     // Use ", version: jhipster_dependencies_version, changing: true" if you want
     // to use a SNAPSHOT release instead of a stable release
+
+    compile group: 'com.amazonaws', name: 'aws-iot-device-sdk-java-samples', version: '1.1.1'
+    compile group: 'org.jumpmind.symmetric', name: 'symmetric-csv', version: '3.5.19'
+    compile group: 'org.springframework', name: 'spring-websocket',version: '5.0.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-messaging', version: '4.2.5.RELEASE'
+
+
+
+    //iot添加
     compile "io.github.jhipster:jhipster-framework"
     compile "org.springframework.boot:spring-boot-starter-cache"
     compile "io.dropwizard.metrics:metrics-core"
