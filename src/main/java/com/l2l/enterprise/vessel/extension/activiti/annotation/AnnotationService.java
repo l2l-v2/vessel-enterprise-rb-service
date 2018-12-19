@@ -11,11 +11,13 @@ import java.util.Map;
 public interface AnnotationService {
     List<Annotation>  getActivityAnnotations(String processDefinitionId , String targetElementId);
 
-    List<Annotation> getMsgAnnotations(String processDefinitionId);
+//    List<Annotation> getMsgAnnotations(String processDefinitionId);
 
     List<Annotation> getAllActivitiesAnnotations(String processDefinitionId);
 
     L2LProcessEngineConfiguration getL2LProcessEngineConfiguration();
+
+    List<MsgAnnotation> getAllMsgAnnotations(String processDefinitionId);
 
     void trigger(String var1,IntegrationContextEntity integrationContextEntity,AnnotationIntergrationContextImpl annotationIntergrationContext);
 

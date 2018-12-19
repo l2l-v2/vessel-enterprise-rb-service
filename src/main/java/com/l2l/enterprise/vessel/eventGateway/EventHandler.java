@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.l2l.enterprise.vessel.coordinator.AwsClient;
 import com.l2l.enterprise.vessel.domain.Destination;
+import com.l2l.enterprise.vessel.domain.FilePathConstants;
 import com.l2l.enterprise.vessel.domain.IoTSetting;
 import com.l2l.enterprise.vessel.domain.VesselShadow;
 import com.l2l.enterprise.vessel.repository.ShadowRepository;
@@ -44,7 +45,7 @@ public class EventHandler {
         this.awsClient = awsClient;
         String fileName = environment.getProperty("awsiot.iotSettings");
         logger.debug("--" + fileName + "--");
-        String path = "/home/cx/Desktop/vessel-enterprise-rb-service/build/resources/main/" + "data/" + fileName;
+        String path = "/home/cx/Desktop/vessel-enterprise-rb-service/build/resources/main/data/" + fileName;
         List<IoTSetting> ioTSettings = CsvUtil.readIoTSettings(path);
         for (int i = 0; i < ioTSettings.size(); i++) {
             IoTSetting ioTSetting = ioTSettings.get(i);

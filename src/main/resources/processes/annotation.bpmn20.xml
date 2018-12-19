@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:l2l="http://www.l2l.com" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1540111006206" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="annotation_process_1" isClosed="false" isExecutable="true" processType="None">
-    <startEvent id="_2" name="StartEvent"/>
+    <startEvent id="_2" name="StartEvent">
+        <extensionElements>
+            <l2l:annotation id="msg_anno_test"  name="ForSsp" implementationType="msgType" pointcutType="" destination="annotationConsumer" script="println 'Hello groovy script ...!'" topic="delay" scenario="ssp" />
+        </extensionElements>
+    </startEvent>
     <serviceTask id="_3" implementation="defaultServiceTaskConnector"  name="ServiceTask">
         <extensionElements>
             <l2l:annotation id="anno_test1"  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" script="println 'Hello groovy script ...!'"/>

@@ -20,14 +20,19 @@ public class AnnotationServiceImpl extends ServiceImpl implements  AnnotationSer
         return this.commandExecutor.execute(new GetActivityAnnotationsCmd(processDefinitionId ,targetElementId));
     }
 
-    @Override
-    public List<Annotation> getMsgAnnotations(String processDefinitionId) {
-        return this.commandExecutor.execute(new GetMsgAnnotationsCmd(processDefinitionId));
-    }
+//    @Override
+//    public List<Annotation> getMsgAnnotations(String processDefinitionId) {
+//        return this.commandExecutor.execute(new GetMsgAnnotationsCmd(processDefinitionId));
+//    }
 
     @Override
     public List<Annotation> getAllActivitiesAnnotations(String processDefinitionId) {
         return this.commandExecutor.execute(new GetAllActivitiesAnnotationsCmd(processDefinitionId));
+    }
+
+    @Override
+    public  List<MsgAnnotation> getAllMsgAnnotations(String processDefinitionId){
+        return this.commandExecutor.execute((new GetMsgAnnotationsCmd(processDefinitionId)));
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AnnotationConstants {
+    public static final String EXCHANGE_NAME = "exchange";
     public static final String ELEMENT_NAME= "annotation";
     public static final String ATTR_ID= "id";
     public static final String ATTR_NAME= "name";

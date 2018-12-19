@@ -40,7 +40,7 @@ public class AnnotationUtils {
                 while (it.hasNext()){
                     ExtensionAttribute tAttr= it.next().get(0);//no duplicate attributes by default
                     if(tAttr != null){
-                        reflectFillAnnotationFiled(tAttr.getName().trim(), tAttr.getValue().trim(), annotaion);
+                        reflectFillAnnotationFiled(tAttr.getName().trim(), tAttr.getValue().trim(), annotaion ,Annotation.class);
                     }
                 }
                 annotations.add(annotaion);
@@ -48,11 +48,36 @@ public class AnnotationUtils {
         }
          return annotations;
        }
+       //附着在开始事件上 可能需要修改
+       public static List<MsgAnnotation> collectMsgAnnoationOnStartEvent(FlowElement flowElement){
+           List<MsgAnnotation> msgAnnotations = new ArrayList<MsgAnnotation>();
+           List<ExtensionElement> extensionElements = flowElement.getExtensionElements().entrySet().stream()
+               .filter(e -> e.getKey().equals(AnnotationConstants.ELEMENT_NAME))
+               .collect(
+                   () -> new ArrayList<ExtensionElement>() ,
+                   (r , e) ->{ r.addAll(e.getValue()); },
+                   (l, r)-> {l.addAll(r);});
+           if(extensionElements != null){
+               for (ExtensionElement extensionElement : extensionElements){
+                   Collection<List<ExtensionAttribute>> attrsCollection = extensionElement.getAttributes().values();
+                   Iterator<List<ExtensionAttribute>> it = attrsCollection.iterator();
+                   MsgAnnotation msgAnnotation = new MsgAnnotation();
+                   msgAnnotation.setTargetElementId(flowElement.getId());
+                   while (it.hasNext()){
+                       ExtensionAttribute tAttr= it.next().get(0);//no duplicate attributes by default
+                       if(tAttr != null){
+                           reflectFillAnnotationFiled(tAttr.getName().trim(), tAttr.getValue().trim(), msgAnnotation , MsgAnnotation.class);
+                       }
+                   }
+                   msgAnnotations.add(msgAnnotation);
+               }
+           }
+            return msgAnnotations;
+       }
 
-       public static void reflectFillAnnotationFiled(String attrName , Object attrVal , Annotation annotation){
+       public static void reflectFillAnnotationFiled(String attrName , Object attrVal , Annotation annotation ,Class<?> clazz){
            Method setMethod = null;
            Method getMethod = null;
-           Class<?> clazz = Annotation.class;
            String methodSuffix=methodSuffix = attrName.substring(0,1).toUpperCase()+attrName.substring(1);
            try {
                Field field = clazz.getDeclaredField(attrName);
@@ -68,5 +93,7 @@ public class AnnotationUtils {
                e.printStackTrace();
            }
        }
+
+
 
 }

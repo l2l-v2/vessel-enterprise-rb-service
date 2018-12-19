@@ -13,6 +13,8 @@ public interface AnnotationManager  {
 
    List<Annotation> getAnnotations();
 
+   List<MsgAnnotation> getMsgAnnotations();
+
    void setAnnotations(List<Annotation> annotations);
 
    void setBehavior(Object behavior);

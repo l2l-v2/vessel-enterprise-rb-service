@@ -20,7 +20,10 @@ public class AnnotationCollector {
         for(String pdId: pdIds){
             List<Annotation> tAns = annotationService.getAllActivitiesAnnotations(pdId);
             annotationManager.getAnnotations().addAll(tAns);
+            List<MsgAnnotation> mAns = annotationService.getAllMsgAnnotations(pdId);
+            annotationManager.getMsgAnnotations().addAll(mAns);
         }
+        log.info(annotationManager.getMsgAnnotations().toString());
         log.debug("All annotations are collected from all deployed process definitions");
     }
 }

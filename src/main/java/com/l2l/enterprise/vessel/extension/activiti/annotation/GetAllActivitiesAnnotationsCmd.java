@@ -3,6 +3,7 @@ package com.l2l.enterprise.vessel.extension.activiti.annotation;
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.Process;
+import org.activiti.bpmn.model.StartEvent;
 import org.activiti.bpmn.model.SubProcess;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.impl.interceptor.Command;
@@ -36,7 +37,10 @@ public class GetAllActivitiesAnnotationsCmd implements Command<List<Annotation>>
                 FlowElement tFe = it.next();
                 if(tFe instanceof SubProcess){
                     log.debug("subprocess is unsupported");
-                }else{
+                } else if(tFe instanceof StartEvent){
+                    log.debug("not FlowElements annotation");
+                }
+                else{
                     List<Annotation> annotations = AnnotationUtils.collectAnnotationsOnElement(tFe);
                     List<Annotation> tRes = annotations.stream().map(an -> {
                         an.setProcessDefinitionId(processDefinitionId);
