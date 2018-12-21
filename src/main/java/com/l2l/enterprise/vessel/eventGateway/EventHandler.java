@@ -63,7 +63,7 @@ public class EventHandler {
 
     }
 
-    public void changeStatus(AWSIotMessage message) throws IOException {
+    public void changeStatus(AWSIotMessage message) throws IOException {//控制某vid船 流程的运转
         JsonNode rootNode = objectMapper.readTree(message.getStringPayload());
         String vid = rootNode.findValue("vid").asText();
         String msgType = rootNode.findValue("msgType").asText();
@@ -98,6 +98,15 @@ public class EventHandler {
         logger.debug("status changed from" + oldStatus + " to " + status);
     }
 
+    public void delayMseeageHandler(AWSIotMessage message) throws  IOException{//更新所有订阅该消息的流程的流程变量
+        JsonNode rootNode = objectMapper.readTree(message.getStringPayload());
+        String vid = rootNode.findValue("vid").asText();
+        String msgType = rootNode.findValue("msgType").asText();
+        String status = rootNode.findValue("status").asText();
+//        VesselShadow vesselShadow = shadowRepository.findById(vid);
+//        String oldStatus = vesselShadow.getStatus();
+        logger.debug("---changeStatus----" + msgType + "--" + status);
+    }
 
     public void vesselShadowForwarding(AWSIotMessage message) throws IOException {
         JsonNode root = objectMapper.readTree(message.getStringPayload());
