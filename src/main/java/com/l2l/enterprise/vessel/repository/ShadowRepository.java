@@ -37,6 +37,16 @@ public class ShadowRepository {
         }
         return null;
     }
+
+    public ShadowWithProcesses findRegisteredVidBypId(String pId){
+        for(ShadowWithProcesses spr : shadowProcessRegistry){
+            if(spr.getPid().equals(pId)){
+                return spr;
+            }
+        }
+        return null;
+    }
+
     public  VesselShadow update(VesselShadow newVs){
         String vid = newVs.getId();
         VesselShadow oldVs = findById(vid);

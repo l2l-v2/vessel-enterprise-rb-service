@@ -87,6 +87,14 @@ spring:
             enabled: false
         stream:
             bindings:
+                DelayDestinationUpdate:
+                    destination: delayDestinationUpdate
+                    contentType: application/json
+                    group: msg #@ no tested
+                DelaymsgConsumer:
+                    destination: DelaymsgConsumer
+                    contentType: application/json
+                    group: msg #@ no tested
                 auditProducer:
                     destination: ${ACT_RB_AUDIT_PRODUCER_DEST:engineEvents} # destination corresponds to Kafka's topic or exchanges pf RabbitMQ
                     contentType: ${ACT_RB_AUDIT_PRODUCER_CONTENT_TYPE:application/json}

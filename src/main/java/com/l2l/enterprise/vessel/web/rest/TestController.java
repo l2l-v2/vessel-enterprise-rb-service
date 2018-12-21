@@ -2,6 +2,7 @@ package com.l2l.enterprise.vessel.web.rest;
 
 import com.l2l.enterprise.vessel.extension.activiti.form.FormDefinition;
 import com.l2l.enterprise.vessel.extension.activiti.form.FormService;
+import com.l2l.enterprise.vessel.service.L2LTaskRuntimeImpl;
 import org.activiti.bpmn.model.ActivitiListener;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.ServiceTask;
@@ -91,7 +92,7 @@ public class TestController {
         return this.resourceAssembler.toResource(this.processRuntime.start(startProcessPayload));
     }
     @Autowired
-    TaskRuntime taskRuntime;
+    L2LTaskRuntimeImpl l2LTaskRuntime;
     @Autowired
     TaskResourceAssembler taskResourceAssembler;
     @RequestMapping(
@@ -105,7 +106,7 @@ public class TestController {
             completeTaskPayload.setTaskId(taskId);
         }
 
-        Task task = this.taskRuntime.complete(completeTaskPayload);
+        Task task = this.l2LTaskRuntime.complete(completeTaskPayload);
         return this.taskResourceAssembler.toResource(task);
     }
 
