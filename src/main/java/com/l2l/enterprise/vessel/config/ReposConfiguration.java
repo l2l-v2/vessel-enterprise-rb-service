@@ -29,7 +29,7 @@ public class ReposConfiguration {
     public LocationRepository locationRepository() throws IOException {
         String  fileName = environment.getProperty("locations.fileName");
         logger.debug("--"+fileName+"--");
-        String path ="/home/cx/Desktop/vessel-enterprise-rb-service/build/resources/main" +"/data/"+fileName;
+        String path ="/home/cx/Desktop/vessel-enterprise-rb-service/vessel-enterprise-rb-service/build/resources/main" +"/data/"+fileName;
         List<Location> locations = CsvUtil.readLocations(path);
         logger.debug("locations : "+locations.toString());
         LocationRepository locationRepository = new LocationRepository();

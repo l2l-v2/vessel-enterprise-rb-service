@@ -3,6 +3,7 @@ package com.l2l.enterprise.vessel.extension.activiti.annotation;
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 import com.l2l.enterprise.vessel.extension.activiti.parser.AnnotationConstants;
 import org.activiti.bpmn.model.*;
+import org.activiti.bpmn.model.Process;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,9 +50,9 @@ public class AnnotationUtils {
          return annotations;
        }
        //附着在开始事件上 可能需要修改
-       public static List<MsgAnnotation> collectMsgAnnoationOnStartEvent(FlowElement flowElement){
+       public static List<MsgAnnotation> collectMsgAnnoationOnProcess(Process process){
            List<MsgAnnotation> msgAnnotations = new ArrayList<MsgAnnotation>();
-           List<ExtensionElement> extensionElements = flowElement.getExtensionElements().entrySet().stream()
+           List<ExtensionElement> extensionElements = process.getExtensionElements().entrySet().stream()
                .filter(e -> e.getKey().equals(AnnotationConstants.ELEMENT_NAME))
                .collect(
                    () -> new ArrayList<ExtensionElement>() ,
@@ -62,7 +63,7 @@ public class AnnotationUtils {
                    Collection<List<ExtensionAttribute>> attrsCollection = extensionElement.getAttributes().values();
                    Iterator<List<ExtensionAttribute>> it = attrsCollection.iterator();
                    MsgAnnotation msgAnnotation = new MsgAnnotation();
-                   msgAnnotation.setTargetElementId(flowElement.getId());
+                   msgAnnotation.setTargetElementId(process.getId());
                    while (it.hasNext()){
                        ExtensionAttribute tAttr= it.next().get(0);//no duplicate attributes by default
                        if(tAttr != null){

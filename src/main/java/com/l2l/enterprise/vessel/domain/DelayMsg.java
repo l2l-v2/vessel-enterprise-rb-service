@@ -8,21 +8,25 @@ import java.util.List;
 import java.util.Map;
 
 public class DelayMsg implements Msg{
+    private List<String> pids;//delete
     private String connectorType;
-    private String delaytime;
+    private String delayx;
+    private String delayy;
     private List<MsgAnnotation> msgAnnotationList;
     private String topic;
     private Map<String,List<Destination>> destinationMap;
-    public String getDelaytime() {
-        return delaytime;
-    }
-    public void setDelaytime(String delaytime) {
-        this.delaytime = delaytime;
-    }
 
 
     public DelayMsg(String connectorType) {
         this.connectorType = connectorType;
+    }
+
+    public List<String> getPids() {
+        return pids;
+    }
+
+    public void setPids(List<String> pids) {
+        this.pids = pids;
     }
 
     public String getConnectorType() {
@@ -55,5 +59,21 @@ public class DelayMsg implements Msg{
 
     public void setDestinationMap(Map<String, List<Destination>> destinationMap) {
         this.destinationMap = destinationMap;
+    }
+
+    public String getDelayx() {
+        return delayx;
+    }
+
+    public void setDelayx(String delayx) {
+        this.delayx = delayx;
+    }
+
+    public String getDelayy() {
+        return delayy;
+    }
+
+    public void setDelayy(String delayy) {
+        this.delayy = delayy;
     }
 }

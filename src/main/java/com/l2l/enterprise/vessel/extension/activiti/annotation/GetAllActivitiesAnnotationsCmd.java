@@ -37,8 +37,6 @@ public class GetAllActivitiesAnnotationsCmd implements Command<List<Annotation>>
                 FlowElement tFe = it.next();
                 if(tFe instanceof SubProcess){
                     log.debug("subprocess is unsupported");
-                } else if(tFe instanceof StartEvent){
-                    log.debug("not FlowElements annotation");
                 }
                 else{
                     List<Annotation> annotations = AnnotationUtils.collectAnnotationsOnElement(tFe);

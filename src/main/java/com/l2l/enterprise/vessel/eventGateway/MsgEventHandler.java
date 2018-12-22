@@ -1,15 +1,21 @@
 package com.l2l.enterprise.vessel.eventGateway;
 
 
+import afu.org.checkerframework.checker.units.qual.A;
 import com.l2l.enterprise.vessel.domain.DelayMsg;
 import com.l2l.enterprise.vessel.domain.Destination;
 import com.l2l.enterprise.vessel.eventGateway.channel.DelayMsgChannel;
 import com.l2l.enterprise.vessel.extension.activiti.annotation.MsgAnnotation;
+import com.l2l.enterprise.vessel.extension.activiti.boot.L2LProcessEngineConfiguration;
 import com.l2l.enterprise.vessel.extension.activiti.connector.channel.AnnotationIntegrationChannels;
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 import com.l2l.enterprise.vessel.repository.ShadowRepository;
 import com.l2l.enterprise.vessel.service.L2LTaskRuntimeImpl;
 import com.l2l.enterprise.vessel.service.TestProcessRuntimeImpl;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.runtime.Execution;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -31,7 +37,9 @@ public class MsgEventHandler {
     BinderAwareChannelResolver binderAwareChannelResolver;
 
     @Autowired
-    private ShadowRepository shadowRepository;
+    VidPidRegistry vidPidRegistry;
+    @Autowired
+    L2LProcessEngineConfiguration l2LProcessEngineConfiguration;
     @StreamListener(value = DelayMsgChannel.DELAY_MSG)
     public void comfirmDelayMsg(DelayMsg delayMsg){
         Map<String, List<MsgAnnotation>> msgAnnoationMap = new HashMap<>();
@@ -44,12 +52,22 @@ public class MsgEventHandler {
             }
         }//需要根据定义id获取流程实例id
 //        testProcessRuntime.processInstances(null);
-        List<String> processIds = new ArrayList<>();
-        if(delayMsg.getDestinationMap() ==null) delayMsg.setDestinationMap(new HashMap<>());
-        for(String pid :processIds){
-            String vid = shadowRepository.findRegisteredVidBypId(pid).getVid();
-            delayMsg.getDestinationMap().put(vid,null);
+        RuntimeService runtimeService = l2LProcessEngineConfiguration.getRuntimeService();
+        for(MsgAnnotation msgAnnotation : delayMsg.getMsgAnnotationList()){
+            List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().processDefinitionId(msgAnnotation.getProcessDefinitionId()).list();
+            if(delayMsg.getDestinationMap() ==null) delayMsg.setDestinationMap(new HashMap<>());
+            for(ProcessInstance processInstance :processInstances){
+                String vid = vidPidRegistry.findRegisteredVidBypId(processInstance.getId());
+                List<Destination> destinations = (List<Destination>) runtimeService.getVariable(processInstance.getId(),"destation");//读取变量需要测试
+                delayMsg.getDestinationMap().put(vid,destinations);
+            }
         }
+//        List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().processDefinitionId("id").list();
+//        if(delayMsg.getDestinationMap() ==null) delayMsg.setDestinationMap(new HashMap<>());
+//        for(ProcessInstance processInstance :processInstances){
+//            String vid = vidPidRegistry.findRegisteredVidBypId(processInstance.getId());
+//            delayMsg.getDestinationMap().put(vid,null);
+//        }
         delayMsg.setConnectorType(DelayMsgChannel.DELAY_SERVICE_CONFIRM);
         org.springframework.messaging.Message<DelayMsg> delayMsgMessage = MessageBuilder.withPayload(delayMsg).setHeader("connectorType", delayMsg.getConnectorType()).build();
         binderAwareChannelResolver.resolveDestination(delayMsg.getConnectorType()).send(delayMsgMessage);//包括topic为delay的所有msgannos
@@ -59,8 +77,16 @@ public class MsgEventHandler {
     public void delayDestinationUpdate(DelayMsg delayMsg){
         for(Map.Entry<String,List<Destination>>  entry : delayMsg.getDestinationMap().entrySet()){
             String vid = entry.getKey();
-            String pid = shadowRepository.findRegisteredProcessesById(vid).getPid();
-            //update 流程变量
+            String pid = vidPidRegistry.findRegisteredpidByvId(vid);
+            //update 流程变量v
+            RuntimeService runtimeService = l2LProcessEngineConfiguration.getRuntimeService();
+            runtimeService.setVariable(pid,"destation",entry.getValue());
+//            for(Destination destination : entry.getValue()){
+//                runtimeService.setVariable(pid,destination.getName() +"estiAnchorTime",destination.getEstiAnchorTime());
+//                runtimeService.setVariable(pid,destination.getName() +"estiArrivalTime",destination.getEstiArrivalTime());
+//                runtimeService.setVariable(pid,destination.getName() +"estiDepartureTime",destination.getEstiDepartureTime());
+//            }//赋值完成 变量名称待变
+
         }
     }
 }

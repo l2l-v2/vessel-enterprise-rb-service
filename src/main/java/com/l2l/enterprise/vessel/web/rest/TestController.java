@@ -40,8 +40,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class TestController {
@@ -91,6 +90,19 @@ public class TestController {
         StartProcessPayload startProcessPayload = new StartProcessPayload(processDefinitionId , processDefinitionKey , processInstanceName , null , null);
         return this.resourceAssembler.toResource(this.processRuntime.start(startProcessPayload));
     }
+
+    @RequestMapping(
+        value = {"/v2/process-instances/withvar/{processDefinitionId}"},
+        method = {RequestMethod.POST}
+    )
+    public ProcessInstanceResource startProcessinstanceWithVariables(@PathVariable("processDefinitionId") String processDefinitionId ,@RequestBody Map<String,Object> varMap){
+        String processDefinitionKey = "myProcess_1";
+        String processInstanceName = "myProcess_1";
+        StartProcessPayload startProcessPayload = new StartProcessPayload(processDefinitionId , processDefinitionKey , processInstanceName , null , varMap);
+        return this.resourceAssembler.toResource(this.processRuntime.start(startProcessPayload));
+    }
+
+
     @Autowired
     L2LTaskRuntimeImpl l2LTaskRuntime;
     @Autowired

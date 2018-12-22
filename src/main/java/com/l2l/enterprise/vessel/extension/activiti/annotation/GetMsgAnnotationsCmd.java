@@ -35,27 +35,32 @@ public class GetMsgAnnotationsCmd implements Command<List<MsgAnnotation>>, Seria
             Collection<FlowElement> flowElements = process.getFlowElements();
             Iterator<FlowElement> it = flowElements.iterator();
             List<MsgAnnotation> res = new ArrayList<MsgAnnotation>();
-            while (it.hasNext()){
-                FlowElement tFe = it.next();
-                if(tFe instanceof StartEvent){
-                    List<MsgAnnotation> msgannotations = AnnotationUtils.collectMsgAnnoationOnStartEvent(tFe);
-                    List<MsgAnnotation> tRes = msgannotations.stream().map(an -> {
-                        an.setProcessDefinitionId(processDefinitionId);
-                        an.setTargetElementId(tFe.getId()); return an;}).collect(Collectors.toList());
-                    res.addAll(tRes);
-                }else if(tFe instanceof SubProcess){
-                    log.debug("subprocess is unsupported");
-                }else {
-                    log.debug("not msgAnnotation");
-                }
-//                    List<Annotation> annotations = AnnotationUtils.collectAnnotationsOnElement(tFe);
-//                    List<Annotation> tRes = annotations.stream().map(an -> {
+            List<MsgAnnotation> msgannotations = AnnotationUtils.collectMsgAnnoationOnProcess(process);
+            List<MsgAnnotation> tRes = msgannotations.stream().map(an -> {
+                an.setProcessDefinitionId(processDefinitionId);
+                an.setTargetElementId(process.getId()); return an;}).collect(Collectors.toList());
+            res.addAll(tRes);
+//            while (it.hasNext()){
+//                FlowElement tFe = it.next();
+//                if(tFe instanceof Process){
+//                    List<MsgAnnotation> msgannotations = AnnotationUtils.collectMsgAnnoationOnProcess(tFe);
+//                    List<MsgAnnotation> tRes = msgannotations.stream().map(an -> {
 //                        an.setProcessDefinitionId(processDefinitionId);
 //                        an.setTargetElementId(tFe.getId()); return an;}).collect(Collectors.toList());
 //                    res.addAll(tRes);
+//                }else if(tFe instanceof SubProcess){
+//                    log.debug("subprocess is unsupported");
+//                }else {
+//                    log.debug("not msgAnnotation");
 //                }
-
-            }
+////                    List<Annotation> annotations = AnnotationUtils.collectAnnotationsOnElement(tFe);
+////                    List<Annotation> tRes = annotations.stream().map(an -> {
+////                        an.setProcessDefinitionId(processDefinitionId);
+////                        an.setTargetElementId(tFe.getId()); return an;}).collect(Collectors.toList());
+////                    res.addAll(tRes);
+////                }
+//
+//            }
             return  res;
         }
     }

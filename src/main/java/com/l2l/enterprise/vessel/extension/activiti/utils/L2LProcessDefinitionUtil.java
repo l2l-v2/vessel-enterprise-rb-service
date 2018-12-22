@@ -5,6 +5,7 @@ import com.l2l.enterprise.vessel.extension.activiti.cache.L2LDeploymentCache;
 import org.activiti.bpmn.model.Process;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.impl.DeploymentQueryImpl;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.persistence.deploy.DeploymentCache;

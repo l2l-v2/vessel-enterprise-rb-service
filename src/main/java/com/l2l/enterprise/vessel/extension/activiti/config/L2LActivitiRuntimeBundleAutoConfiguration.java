@@ -64,7 +64,7 @@ public class L2LActivitiRuntimeBundleAutoConfiguration {
         ApplicationContext applicationContext, AnnotationContextBuilder annotationContextBuilder, RuntimeBundleInfoAppender runtimeBundleInfoAppender){
         AnnotationCollector annotationCollector = new AnnotationCollector(annotationService);
         AnnotationManager annotationManager = annotationService.getL2LProcessEngineConfiguration().getAnnotationManager();
-        DefaultAnnotationBehavior annotationBehavior = new DefaultAnnotationBehavior(integrationContextManager , eventPublisher , applicationContext ,annotationContextBuilder ,  runtimeBundleInfoAppender);
+        DefaultAnnotationBehavior annotationBehavior = new DefaultAnnotationBehavior(annotationService,integrationContextManager , eventPublisher , applicationContext ,annotationContextBuilder ,  runtimeBundleInfoAppender);
         if(annotationBehavior instanceof ActivityBehavior){
             annotationManager.setBehavior(annotationBehavior);
         }

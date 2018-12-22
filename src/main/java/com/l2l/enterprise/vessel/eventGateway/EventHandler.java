@@ -45,7 +45,7 @@ public class EventHandler {
         this.awsClient = awsClient;
         String fileName = environment.getProperty("awsiot.iotSettings");
         logger.debug("--" + fileName + "--");
-        String path = "/home/cx/Desktop/vessel-enterprise-rb-service/build/resources/main/data/" + fileName;
+        String path = "/home/cx/Desktop/vessel-enterprise-rb-service/vessel-enterprise-rb-service/build/resources/main/data/" + fileName;
         List<IoTSetting> ioTSettings = CsvUtil.readIoTSettings(path);
         for (int i = 0; i < ioTSettings.size(); i++) {
             IoTSetting ioTSetting = ioTSettings.get(i);
