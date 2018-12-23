@@ -1,9 +1,11 @@
 package com.l2l.enterprise.vessel.extension.activiti.connector.channel;
 
+import com.l2l.enterprise.vessel.domain.DelayMsg;
+import com.l2l.enterprise.vessel.eventGateway.MsgEventHandler;
+import com.l2l.enterprise.vessel.eventGateway.channel.DelayMsgChannel;
 import com.l2l.enterprise.vessel.extension.activiti.annotation.AnnotationIntegrationResultImpl;
 import com.l2l.enterprise.vessel.extension.activiti.annotation.AnnotationIntergrationContextImpl;
 import com.l2l.enterprise.vessel.extension.activiti.annotation.AnnotationService;
-import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 import org.activiti.cloud.services.events.configuration.RuntimeBundleProperties;
 import org.activiti.cloud.services.events.converter.RuntimeBundleInfoAppender;
 import org.activiti.engine.RuntimeService;
@@ -11,7 +13,6 @@ import org.activiti.engine.impl.persistence.entity.integration.IntegrationContex
 import org.activiti.engine.integration.IntegrationContextService;
 import org.activiti.runtime.api.event.impl.CloudIntegrationResultReceivedImpl;
 import org.activiti.runtime.api.model.IntegrationResult;
-import org.activiti.runtime.api.model.impl.IntegrationContextImpl;
 import org.activiti.services.connectors.channel.ServiceTaskIntegrationResultEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@EnableBinding({AnnotationIntegrationChannels.class})
+@EnableBinding({AnnotationIntegrationChannels.class })
 public class AnnotationIntergrationResultEventHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTaskIntegrationResultEventHandler.class);
     private final RuntimeService runtimeService;
@@ -33,16 +34,18 @@ public class AnnotationIntergrationResultEventHandler {
     private final RuntimeBundleProperties runtimeBundleProperties;
     private final RuntimeBundleInfoAppender runtimeBundleInfoAppender;
     private final AnnotationService annotationService;
+    private final MsgEventHandler msgEventHandler;
     private static org.slf4j.Logger log = LoggerFactory.getLogger(AnnotationIntergrationResultEventHandler.class);
 
 
-    public AnnotationIntergrationResultEventHandler(RuntimeService runtimeService, IntegrationContextService integrationContextService, MessageChannel auditProducer, RuntimeBundleProperties runtimeBundleProperties, RuntimeBundleInfoAppender runtimeBundleInfoAppender, AnnotationService annotationService) {
+    public AnnotationIntergrationResultEventHandler(RuntimeService runtimeService, IntegrationContextService integrationContextService, MessageChannel auditProducer, RuntimeBundleProperties runtimeBundleProperties, RuntimeBundleInfoAppender runtimeBundleInfoAppender, AnnotationService annotationService, MsgEventHandler msgEventHandler) {
         this.runtimeService = runtimeService;
         this.integrationContextService = integrationContextService;
         this.auditProducer = auditProducer;
         this.runtimeBundleProperties = runtimeBundleProperties;
         this.runtimeBundleInfoAppender = runtimeBundleInfoAppender;
         this.annotationService = annotationService;
+        this.msgEventHandler = msgEventHandler;
     }
 
     @StreamListener("AnnotationIntegrationResultsConsumer")
@@ -78,4 +81,18 @@ public class AnnotationIntergrationResultEventHandler {
         }
 
     }
+//    @StreamListener("delayDestinationUpdate")
+//    public void delayDestinationUpdate(DelayMsg delayMsg){
+//        msgEventHandler.delayDestinationUpdate(delayMsg);
+//    }
+//    @StreamListener("AnnotationIntegrationResultsConsumer")
+//    public void comfirmDelayMsg(DelayMsg delayMsg){
+//        msgEventHandler.comfirmDelayMsg(delayMsg);
+//    }
+
+//    @StreamListener(DelayMsgChannel.DELAY_MSG)
+//    public void comfirmDelayMsg(DelayMsg delayMsg){
+//        LOGGER.info("get");
+////        msgEventHandler.comfirmDelayMsg(delayMsg);
+//    }
 }

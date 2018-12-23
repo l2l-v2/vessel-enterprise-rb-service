@@ -4,21 +4,33 @@ package com.l2l.enterprise.vessel.domain;
 
 import com.l2l.enterprise.vessel.extension.activiti.annotation.MsgAnnotation;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class DelayMsg implements Msg{
+public class DelayMsg implements Msg ,Serializable {
     private List<String> pids;//delete
     private String connectorType;
     private String delayx;
     private String delayy;
-    private List<MsgAnnotation> msgAnnotationList;
     private String topic;
     private Map<String,List<Destination>> destinationMap;
 
+    public DelayMsg() {
+    }
 
     public DelayMsg(String connectorType) {
         this.connectorType = connectorType;
+    }
+
+    public DelayMsg(List<String> pids, String connectorType, String delayx, String delayy,  String topic, Map<String, List<Destination>> destinationMap) {
+        this.pids = pids;
+        this.connectorType = connectorType;
+        this.delayx = delayx;
+        this.delayy = delayy;
+
+        this.topic = topic;
+        this.destinationMap = destinationMap;
     }
 
     public List<String> getPids() {
@@ -45,13 +57,7 @@ public class DelayMsg implements Msg{
         this.topic = topic;
     }
 
-    public List<MsgAnnotation> getMsgAnnotationList() {
-        return msgAnnotationList;
-    }
 
-    public void setMsgAnnotationList(List<MsgAnnotation> msgAnnotationList) {
-        this.msgAnnotationList = msgAnnotationList;
-    }
 
     public Map<String, List<Destination>> getDestinationMap() {
         return destinationMap;

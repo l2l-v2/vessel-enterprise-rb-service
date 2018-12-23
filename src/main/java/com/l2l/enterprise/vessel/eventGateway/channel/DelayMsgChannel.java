@@ -11,14 +11,14 @@ public interface DelayMsgChannel {
     String DELAY_SERVICE_CONFIRM = "delayServiceConfirm";
 
     String DELAY_DESTINATION_UPDATE = "delayDestinationUpdate";
-
     @Input("delayDestinationUpdate")
     SubscribableChannel delayDestinationUpdate();
 
-    @Input("delaymsgConsumer")
-    MessageChannel delaymsgConsumer();
+    @Input(DELAY_MSG)
+    SubscribableChannel delaymsgConsumer();
 
     @Output("delayServiceConfirm")
-    SubscribableChannel delayServiceConfirm();
+    MessageChannel delayServiceConfirm();
+
 
 }

@@ -6,6 +6,16 @@ public class Destination {
     private String estiArrivalTime;
     private String estiDepartureTime;
 
+    public Destination(String name, String estiAnchorTime, String estiArrivalTime, String estiDepartureTime) {
+        this.name = name;
+        this.estiAnchorTime = estiAnchorTime;
+        this.estiArrivalTime = estiArrivalTime;
+        this.estiDepartureTime = estiDepartureTime;
+    }
+
+    public Destination() {
+    }
+
     public String getName() {
         return name;
     }

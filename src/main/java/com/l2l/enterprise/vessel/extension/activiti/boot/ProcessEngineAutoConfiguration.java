@@ -88,8 +88,7 @@ public class ProcessEngineAutoConfiguration extends AbstractProcessEngineAutoCon
 
         // The asynchronous job executor is disabled by default and needs to be activated.
 //        conf.setAsyncExecutorDefaultTimerJobAcquireWaitTime(5000);
-        conf.setAsyncExecutorActivate(true);
-
+//        conf.setAsyncExecutorActivate(true);
 
 
         return conf;

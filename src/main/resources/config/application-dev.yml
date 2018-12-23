@@ -87,14 +87,18 @@ spring:
             enabled: false
         stream:
             bindings:
-                DelayDestinationUpdate:
+                delayServiceConfirm:
+                    destination: delayServiceConfirm
+                    contentType: application/json
+                    group: integration #@ no tested
+                delayDestinationUpdate:
                     destination: delayDestinationUpdate
                     contentType: application/json
-                    group: msg #@ no tested
-                DelaymsgConsumer:
-                    destination: DelaymsgConsumer
+                    group: integration #@ no tested
+                delaymsgConsumer:
+                    destination: delaymsgConsumer
                     contentType: application/json
-                    group: msg #@ no tested
+                    group: integration #@ no tested
                 auditProducer:
                     destination: ${ACT_RB_AUDIT_PRODUCER_DEST:engineEvents} # destination corresponds to Kafka's topic or exchanges pf RabbitMQ
                     contentType: ${ACT_RB_AUDIT_PRODUCER_CONTENT_TYPE:application/json}
@@ -109,6 +113,7 @@ spring:
                     destination: AnnotationIntegrationResultsConsumer
                     contentType: application/json
                     group: integration # @XiCheng **left to confirm**
+
 #            binders:  # configure service info of the rabbitmq bound to stream
 #                defaultRabbit:
 #                    type: rabbit
