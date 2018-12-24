@@ -54,10 +54,8 @@ public class MsgEventHandler {
             if(delayMsg.getDestinationMap() ==null) delayMsg.setDestinationMap(new HashMap<>());
             for(ProcessInstance processInstance :processInstances){
                 String vid = vidPidRegistry.findRegisteredVidBypId(processInstance.getId());
-                Destination de = new Destination();
-                List<Destination> destinations = new ArrayList<>();
-                destinations.add(de);
-//                    (List<Destination>) runtimeService.getVariable(processInstance.getId(),"destation");//读取变量需要测试
+//                Destination de = new Destination();
+                List<Destination> destinations = (List<Destination>) runtimeService.getVariable(processInstance.getId(),"destations");//读取变量需要测试
                 delayMsg.getDestinationMap().put(vid,destinations);
             }
         }
@@ -79,7 +77,7 @@ public class MsgEventHandler {
             String pid = vidPidRegistry.findRegisteredpidByvId(vid);
             //update 流程变量v
             RuntimeService runtimeService = l2LProcessEngineConfiguration.getRuntimeService();
-            runtimeService.setVariable(pid,"destation",entry.getValue());
+            runtimeService.setVariable(pid,"destations",entry.getValue());
 //            for(Destination destination : entry.getValue()){
 //                runtimeService.setVariable(pid,destination.getName() +"estiAnchorTime",destination.getEstiAnchorTime());
 //                runtimeService.setVariable(pid,destination.getName() +"estiArrivalTime",destination.getEstiArrivalTime());
