@@ -41,12 +41,12 @@ public class EventDispatcher extends AWSIotTopic {
     @Override
     public void onMessage(AWSIotMessage message) {
         String receivedTopic = message.getTopic();
-        if(this.msgAnnoationMap == null){
-            setMsgAnnoationMap(msgMatch.initMsgAnnotationMap());
-        }
-        if(this.msgAnnoationMap.containsKey(receivedTopic)){
-
-        }
+//        if(this.msgAnnoationMap == null){
+//            setMsgAnnoationMap(msgMatch.initMsgAnnotationMap());
+//        }
+//        if(this.msgAnnoationMap.containsKey(receivedTopic)){
+//
+//        }
         try {
             if(receivedTopic.equals("$aws/things/V413362260/shadow/update/accepted")){
                 updateShadowHandler(message);

@@ -3,8 +3,8 @@ package com.l2l.enterprise.vessel.extension.activiti.annotation;
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 
 public class MsgAnnotation extends Annotation {
-    private String topic;
-    private String scenario;
+    public String topic;
+    public String scenario;
 
     public String getTopic() {
         return topic;

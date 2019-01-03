@@ -81,8 +81,8 @@ public class AnnotationUtils {
            Method getMethod = null;
            String methodSuffix=methodSuffix = attrName.substring(0,1).toUpperCase()+attrName.substring(1);
            try {
-               Field field = clazz.getDeclaredField(attrName);
-               setMethod = clazz.getDeclaredMethod(SET_PREFIX+methodSuffix , new Class[]{field.getType()});
+               Field field = clazz.getField(attrName);
+               setMethod = clazz.getMethod(SET_PREFIX+methodSuffix , new Class[]{field.getType()});
                setMethod.invoke(annotation , new Object[]{attrVal});
            } catch (NoSuchFieldException e) {
                e.printStackTrace();

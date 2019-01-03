@@ -51,7 +51,7 @@ public class DefaultAnnotationBehavior extends AbstractBpmnActivityBehavior {
             execution.setVariables(context.getOutBoundVariables());
             //trigger to leave
             this.annotationService.trigger(execution.getId(),integrationContext ,  context);
-            super.execute(execution);
+//            super.execute(execution);
         } else {
             this.publishSpringEvent(execution, integrationContext,annotation);
             log.info("annotationbehavior execute");

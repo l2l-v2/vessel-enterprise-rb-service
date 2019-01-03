@@ -5,17 +5,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class Annotation {
-    protected String id = UUID.randomUUID().toString();
-    protected String name;
-    protected String pointcutType;
-    protected String implementationType;
-    protected String destination;
-    protected String handler;
-    protected String script;
-    private String processDefinitionId;
-    protected String targetElementId;
-    protected List<String> inputVariables = new ArrayList();//map
-    protected List<String> outputVariables = new ArrayList();
+    public String id = UUID.randomUUID().toString();
+    public String name;
+    public String pointcutType;
+    public String implementationType;
+    public String destination;
+    public String handler;
+    public String script;
+    public String processDefinitionId;
+    public String targetElementId;
+    public List<String> inputVariables = new ArrayList();//map
+    public List<String> outputVariables = new ArrayList();
 
     public Annotation(){
 

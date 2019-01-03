@@ -14,13 +14,9 @@ import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
-@EnableBinding({DelayMsgChannel.class})
 public class MsgEventHandler {
 
     private final MsgMatch msgMatch;
@@ -35,7 +31,7 @@ public class MsgEventHandler {
         this.l2LProcessEngineConfiguration = l2LProcessEngineConfiguration;
     }
 
-    @StreamListener(value = "delaymsgConsumer")
+
     public void comfirmDelayMsg(DelayMsg delayMsg){
         Map<String, List<MsgAnnotation>> msgAnnoationMap = new HashMap<>();
         List<MsgAnnotation> mmp = new ArrayList<>();
@@ -55,8 +51,14 @@ public class MsgEventHandler {
             for(ProcessInstance processInstance :processInstances){
                 String vid = vidPidRegistry.findRegisteredVidBypId(processInstance.getId());
 //                Destination de = new Destination();
-                List<Destination> destinations = (List<Destination>) runtimeService.getVariable(processInstance.getId(),"destations");//读取变量需要测试
-                delayMsg.getDestinationMap().put(vid,destinations);
+                if(vid != null ){
+                List<LinkedHashMap<String,String> > destinations = (List<LinkedHashMap<String,String> >) runtimeService.getVariable(processInstance.getId(),"destinations");//读取变量需要测试
+                List<Destination> destinationList = new ArrayList<>();
+                for(LinkedHashMap<String,String> de :destinations){
+                    destinationList.add(new Destination(de.get("name"),de.get("estiAnchorTime"),de.get("estiArrivalTime"),de.get("estiDepartureTime")));
+                }
+                delayMsg.getDestinationMap().put(vid,destinationList);
+                }
             }
         }
 //        List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().processDefinitionId("id").list();
@@ -70,14 +72,13 @@ public class MsgEventHandler {
         binderAwareChannelResolver.resolveDestination(delayMsg.getConnectorType()).send(delayMsgMessage);//包括topic为delay的所有msgannos
     }
 
-    @StreamListener(value = "delayDestinationUpdate")
     public void delayDestinationUpdate(DelayMsg delayMsg){
         for(Map.Entry<String,List<Destination>>  entry : delayMsg.getDestinationMap().entrySet()){
             String vid = entry.getKey();
             String pid = vidPidRegistry.findRegisteredpidByvId(vid);
             //update 流程变量v
             RuntimeService runtimeService = l2LProcessEngineConfiguration.getRuntimeService();
-            runtimeService.setVariable(pid,"destations",entry.getValue());
+            runtimeService.setVariable(pid,"destinations",entry.getValue());
 //            for(Destination destination : entry.getValue()){
 //                runtimeService.setVariable(pid,destination.getName() +"estiAnchorTime",destination.getEstiAnchorTime());
 //                runtimeService.setVariable(pid,destination.getName() +"estiArrivalTime",destination.getEstiArrivalTime());
