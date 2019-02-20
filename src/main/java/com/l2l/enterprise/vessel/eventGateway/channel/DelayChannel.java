@@ -12,21 +12,21 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableBinding({DelayMsgChannel.class})
 public class DelayChannel {
-    @Autowired
-    EventAssember eventAssember;
-
-    @Autowired
-    MsgEventHandler eventHandler;
-    @StreamListener(value = "delaymsgConsumer")
-    public void comfirmDelayMsg(DelayMsg delayMsg){
-//        eventAssember.handle("delaymsgConsumer" , delayMsg);
-
-        eventHandler.comfirmDelayMsg(delayMsg);
-    }
-    @StreamListener(value = "delayDestinationUpdate")
-    public void delayDestinationUpdate(DelayMsg delayMsg){
-//        eventAssember.handle("delaymsgConsumer" , delayMsg);
-
-        eventHandler.delayDestinationUpdate(delayMsg);
-    }
+//    @Autowired
+//    EventAssember eventAssember;
+//
+//    @Autowired
+//    MsgEventHandler eventHandler;
+//    @StreamListener(value = "delaymsgConsumer")
+//    public void comfirmDelayMsg(DelayMsg delayMsg){
+////        eventAssember.handle("delaymsgConsumer" , delayMsg);
+//
+//        eventHandler.comfirmDelayMsg(delayMsg);
+//    }
+//    @StreamListener(value = "delayDestinationUpdate")
+//    public void delayDestinationUpdate(DelayMsg delayMsg){
+////        eventAssember.handle("delaymsgConsumer" , delayMsg);
+//
+//        eventHandler.delayDestinationUpdate(delayMsg);
+//    }
 }

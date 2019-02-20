@@ -8,56 +8,22 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class DelayMsg implements Msg ,Serializable {
-    private List<String> pids;//delete
-    private String connectorType;
+public class DelayMsg extends MsgImpl implements Serializable {
     private String delayx;
     private String delayy;
-    private String topic;
     private Map<String,List<Destination>> destinationMap;
+    private Integer step;
 
     public DelayMsg() {
+        super();
     }
 
-    public DelayMsg(String connectorType) {
-        this.connectorType = connectorType;
-    }
-
-    public DelayMsg(List<String> pids, String connectorType, String delayx, String delayy,  String topic, Map<String, List<Destination>> destinationMap) {
-        this.pids = pids;
-        this.connectorType = connectorType;
+    public DelayMsg(List<String> pids, String connectorType, String topic, String scenario, String delayx, String delayy, Map<String, List<Destination>> destinationMap) {
+        super(pids, connectorType, topic, scenario);
         this.delayx = delayx;
         this.delayy = delayy;
-
-        this.topic = topic;
         this.destinationMap = destinationMap;
     }
-
-    public List<String> getPids() {
-        return pids;
-    }
-
-    public void setPids(List<String> pids) {
-        this.pids = pids;
-    }
-
-    public String getConnectorType() {
-        return connectorType;
-    }
-
-    public void setConnectorType(String connectorType) {
-        this.connectorType = connectorType;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-
 
     public Map<String, List<Destination>> getDestinationMap() {
         return destinationMap;
@@ -65,6 +31,14 @@ public class DelayMsg implements Msg ,Serializable {
 
     public void setDestinationMap(Map<String, List<Destination>> destinationMap) {
         this.destinationMap = destinationMap;
+    }
+
+    public Integer getStep() {
+        return step;
+    }
+
+    public void setStep(Integer step) {
+        this.step = step;
     }
 
     public String getDelayx() {

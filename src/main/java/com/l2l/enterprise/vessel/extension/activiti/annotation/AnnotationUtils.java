@@ -49,7 +49,7 @@ public class AnnotationUtils {
         }
          return annotations;
        }
-       //附着在开始事件上 可能需要修改
+
        public static List<MsgAnnotation> collectMsgAnnoationOnProcess(Process process){
            List<MsgAnnotation> msgAnnotations = new ArrayList<MsgAnnotation>();
            List<ExtensionElement> extensionElements = process.getExtensionElements().entrySet().stream()
