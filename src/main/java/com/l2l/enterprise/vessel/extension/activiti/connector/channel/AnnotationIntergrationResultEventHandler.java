@@ -1,6 +1,7 @@
 package com.l2l.enterprise.vessel.extension.activiti.connector.channel;
 
 import com.l2l.enterprise.vessel.domain.DelayMsg;
+import com.l2l.enterprise.vessel.eventGateway.DelayMsgHandler;
 import com.l2l.enterprise.vessel.eventGateway.MsgEventHandler;
 import com.l2l.enterprise.vessel.eventGateway.channel.DelayMsgChannel;
 import com.l2l.enterprise.vessel.extension.activiti.annotation.AnnotationIntegrationResultImpl;
@@ -38,14 +39,14 @@ public class AnnotationIntergrationResultEventHandler {
     private static org.slf4j.Logger log = LoggerFactory.getLogger(AnnotationIntergrationResultEventHandler.class);
 
 
-    public AnnotationIntergrationResultEventHandler(RuntimeService runtimeService, IntegrationContextService integrationContextService, MessageChannel auditProducer, RuntimeBundleProperties runtimeBundleProperties, RuntimeBundleInfoAppender runtimeBundleInfoAppender, AnnotationService annotationService, MsgEventHandler msgEventHandler) {
+    public AnnotationIntergrationResultEventHandler(RuntimeService runtimeService, IntegrationContextService integrationContextService, MessageChannel auditProducer, RuntimeBundleProperties runtimeBundleProperties, RuntimeBundleInfoAppender runtimeBundleInfoAppender, AnnotationService annotationService, DelayMsgHandler delayMsgHandler) {
         this.runtimeService = runtimeService;
         this.integrationContextService = integrationContextService;
         this.auditProducer = auditProducer;
         this.runtimeBundleProperties = runtimeBundleProperties;
         this.runtimeBundleInfoAppender = runtimeBundleInfoAppender;
         this.annotationService = annotationService;
-        this.msgEventHandler = msgEventHandler;
+        this.msgEventHandler = delayMsgHandler;
     }
 
     @StreamListener("AnnotationIntegrationResultsConsumer")

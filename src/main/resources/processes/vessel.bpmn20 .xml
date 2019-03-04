@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="vessel" name="vessel" isExecutable="true">
+    <documentation><extensionElements>
+         <l2l:annotation id="msg_anno_test"  name="ForSsp" implementationType="msgType" pointcutType="" destination="annotationConsumer" script="println 'Hello groovy script ...!'" topic="delay" scenario="ssp" />
+      </extensionElements></documentation>
+    <startEvent id="kk"></startEvent>
+    <userTask id="11">
+      <documentation>hjhhh</documentation>
+    </userTask>
+    <sequenceFlow id="sid-004F1EB4-158C-4D7E-9299-8393607728B0" sourceRef="kk" targetRef="11"></sequenceFlow>
+    <endEvent id="ee"></endEvent>
+    <sequenceFlow id="sid-EA00FC11-A934-43F3-94D2-D749EA790441" sourceRef="11" targetRef="ee"></sequenceFlow>
+    <textAnnotation id="22">
+      <text><l2l:annotation id="Defaults" name="Defaults" implementationType="msgType" pointcutType="Defaults" destination="Defaults" script="Defaults" topic="Defaults" scenario="ssp" /></text>
+    </textAnnotation>
+    <association id="sid-90A3BBA3-C98B-456B-B64B-A40A1B0F05FF" sourceRef="11" targetRef="22" associationDirection="None"></association>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_vessel">
+    <bpmndi:BPMNPlane bpmnElement="vessel" id="BPMNPlane_vessel">
+      <bpmndi:BPMNShape bpmnElement="kk" id="BPMNShape_kk">
+        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="22" id="BPMNShape_22">
+        <omgdc:Bounds height="50.0" width="100.0" x="195.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="11" id="BPMNShape_11">
+        <omgdc:Bounds height="80.0" width="100.0" x="212.5" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ee" id="BPMNShape_ee">
+        <omgdc:Bounds height="28.0" width="28.0" x="357.5" y="175.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-90A3BBA3-C98B-456B-B64B-A40A1B0F05FF" id="BPMNShape_sid-90A3BBA3-C98B-456B-B64B-A40A1B0F05FF">
+        <omgdc:Bounds height="95.7917594234543" width="47.5437041256115" x="195.0" y="229.2082405765457"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-90A3BBA3-C98B-456B-B64B-A40A1B0F05FF" id="BPMNEdge_sid-90A3BBA3-C98B-456B-B64B-A40A1B0F05FF">
+        <omgdi:waypoint x="242.64705882352942" y="228.95000000000002"></omgdi:waypoint>
+        <omgdi:waypoint x="195.0" y="300.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-EA00FC11-A934-43F3-94D2-D749EA790441" id="BPMNEdge_sid-EA00FC11-A934-43F3-94D2-D749EA790441">
+        <omgdi:waypoint x="312.449999999996" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="357.5" y="189.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-004F1EB4-158C-4D7E-9299-8393607728B0" id="BPMNEdge_sid-004F1EB4-158C-4D7E-9299-8393607728B0">
+        <omgdi:waypoint x="129.90893565326877" y="179.1118784808388"></omgdi:waypoint>
+        <omgdi:waypoint x="212.49999999999983" y="185.27118644067798"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

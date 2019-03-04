@@ -1,12 +1,13 @@
 package com.l2l.enterprise.vessel.eventGateway;
 
 import com.l2l.enterprise.vessel.extension.activiti.annotation.MsgAnnotation;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Component
 public class MsgAnnotationUtil {
     private final MsgMatch msgMatch;
 

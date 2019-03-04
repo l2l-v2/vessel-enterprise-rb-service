@@ -17,11 +17,12 @@ import org.activiti.runtime.api.query.Page;
 import org.activiti.runtime.api.query.Pageable;
 import org.activiti.runtime.api.query.impl.PageImpl;
 import org.activiti.runtime.api.security.SecurityManager;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-
+@Component
 public class L2LTaskRuntimeImpl implements TaskRuntime {
     private final TaskService taskService;
     private final APITaskConverter taskConverter;

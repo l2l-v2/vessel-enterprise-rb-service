@@ -42,4 +42,5 @@ public class L2LTaskControllerImpl {
         Task task = this.taskRuntime.task(taskId);
         return this.taskResourceAssembler.toResource(task);
     }
+
 }

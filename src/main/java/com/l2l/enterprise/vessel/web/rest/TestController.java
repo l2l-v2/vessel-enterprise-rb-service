@@ -40,6 +40,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -143,6 +144,16 @@ public class TestController {
     @RequestMapping("/sender")
     public void sender(){
         senderTest.sinkSenderTester();
+    }
+    @Autowired
+    BpmnAdd bpmnAdd;
+    @RequestMapping(
+        value = {"/v2/bpmn"},
+        method = {RequestMethod.POST}
+    )
+    public String bpmnFileChange(@RequestBody Map<String,String> fileMap) throws IOException {
+        bpmnAdd.changBpmn(fileMap.get("oldfile"),fileMap.get("newfile"));
+        return "ok";
     }
 
 }

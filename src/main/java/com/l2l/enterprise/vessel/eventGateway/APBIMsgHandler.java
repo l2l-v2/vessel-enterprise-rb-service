@@ -11,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-
+@Component
 public class APBIMsgHandler implements MsgEventHandler{
     private final MsgMatch msgMatch;
     private final BinderAwareChannelResolver binderAwareChannelResolver;
