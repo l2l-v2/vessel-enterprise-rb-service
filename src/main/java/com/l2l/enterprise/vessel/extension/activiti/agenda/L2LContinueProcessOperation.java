@@ -1,10 +1,13 @@
 package com.l2l.enterprise.vessel.extension.activiti.agenda;
 
 import com.l2l.enterprise.vessel.extension.activiti.annotation.DefaultAnnotationBehavior;
+import com.l2l.enterprise.vessel.extension.activiti.annotation.MsgAnnotation;
 import com.l2l.enterprise.vessel.extension.activiti.boot.L2LProcessEngineConfiguration;
 import com.l2l.enterprise.vessel.extension.activiti.model.Annotation;
 import com.l2l.enterprise.vessel.extension.activiti.parser.AnnotationConstants;
 import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.SequenceFlow;
+import org.activiti.bpmn.model.StartEvent;
 import org.activiti.engine.impl.agenda.ContinueProcessOperation;
 import org.activiti.engine.impl.delegate.ActivityBehavior;
 import org.activiti.engine.impl.interceptor.CommandContext;
@@ -40,13 +43,54 @@ public class L2LContinueProcessOperation extends ContinueProcessOperation {
 
     public void run() {
         FlowElement currentFlowElement = this.getCurrentFlowElement(this.execution);
+        if(currentFlowElement instanceof StartEvent){
+            Annotation mAn = acquireMsgAnnotations(currentFlowElement,execution);
+            if(mAn != null){
+                enterPreAnnotation(mAn);//目前一个任务上只能附着一个annotation
+            }
+
+        }
 //        IntegrationContextEntity integrationContextEntity = this.integrationContextService.findById(integrationResult.getIntegrationContext().getId());
         Annotation tAn = acquirePreAnnotations(currentFlowElement , execution);
         if(tAn != null){
-            enterPreAnnotation(tAn);
+            enterPreAnnotation(tAn);//目前一个任务上只能附着一个annotation
         }else{
             super.run();
         }
+    }
+    protected  Annotation acquireMsgAnnotations(FlowElement flowNode , ExecutionEntity execution){
+        String pdId = execution.getProcessDefinitionId();
+        List<MsgAnnotation> msgAns = new ArrayList<MsgAnnotation>();
+        List<Annotation> usedAns = new ArrayList<Annotation>();
+        if(this.commandContext.getProcessEngineConfiguration() instanceof  L2LProcessEngineConfiguration){
+            msgAns = ((L2LProcessEngineConfiguration) this.commandContext.getProcessEngineConfiguration()).getAnnotationManager().getMsgAnnotations()
+                .stream().filter( an -> {
+                    boolean selected = false;
+                    if(integrationContextEntity == null){
+                        selected = (an.getImplementationType().equals("msgType")&&
+                                an.getProcessDefinitionId().equals(execution.getProcessDefinitionId()));
+                    }else {//为重复an做准备
+                        selected = (!this.integrationContextEntity.getFlowNodeId().equals(an.getTargetElementId())&&
+                            !this.integrationContextEntity.getProcessDefinitionId().equals(an.getProcessDefinitionId())&&
+                            !this.integrationContextEntity.getExecutionId().equals((this.execution.getId())) &&
+                            an.getImplementationType().equals("msgType")&&
+                            an.getTargetElementId().equals(flowNode.getId()) &&
+                            an.getProcessDefinitionId().equals(execution.getProcessDefinitionId()));
+
+                    }
+                    return selected;
+
+                }).collect(Collectors.toList());
+        }
+        if(msgAns.size() > 0){
+            // Initially , supporting  only one annotation of specified 'pointcut' type on the FlowElement. Indeed we can support more than one.
+            //Here we take the first from the annotation queue on the current flowElement.
+            Annotation tAn = (Annotation) msgAns.get(0);
+            return tAn;
+        }else{
+            logger.debug("No pre-annotaions is attached to the FlowElement {}" , flowNode.getId());
+        }
+        return null;
     }
 
 

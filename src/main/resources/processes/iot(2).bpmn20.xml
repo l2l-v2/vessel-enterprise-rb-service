@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:l2l="http://www.l2l.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://bpmn.io/schema/bpmn" id="Definitions_14tm7sj" exporter="Camunda Modeler" exporterVersion="3.1.0">
+  <process id="Process_iot" isExecutable="true">
+      <extensionElements>
+          <l2l:annotation id="iotEnable" name="iotEnable"  implementationType="msgType" destination="annotationConsumer" iftttRules="[{if:true,then:IotTopic}]"
+                          awsVariables="velocity:0,location:wuhan,humidity:0,temperature:0" IOThub="iotService" />
+      </extensionElements>
+    <startEvent id="StartEvent_1"></startEvent>
+    <sequenceFlow id="SequenceFlow_1j39axm" sourceRef="StartEvent_1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_1ycfzci" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_0ih253z" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_05nkwxn" sourceRef="usertask3" targetRef="usertask4"></sequenceFlow>
+    <exclusiveGateway id="ExclusiveGateway_177jqlz"></exclusiveGateway>
+    <sequenceFlow id="SequenceFlow_0i1r7ae" sourceRef="usertask4" targetRef="ExclusiveGateway_177jqlz"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_106dunu" sourceRef="ExclusiveGateway_177jqlz" targetRef="usertask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reachDestination == "ture"}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="EndEvent_118psbm"></endEvent>
+    <sequenceFlow id="SequenceFlow_19iyjhr" sourceRef="usertask6" targetRef="EndEvent_118psbm"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_17qnkgu" sourceRef="ExclusiveGateway_177jqlz" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reachDestination == "false"}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask1" name="applying"></userTask>
+    <userTask id="usertask2" name="voyaging"></userTask>
+    <userTask id="usertask3" name="anchoring"></userTask>
+    <userTask id="usertask4" name="docking"></userTask>
+    <userTask id="usertask6" name="delivering"></userTask>
+    <association id="association1" sourceRef="textannotation1" targetRef="StartEvent_1"></association>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Process_0nv76mx">
+    <bpmndi:BPMNPlane bpmnElement="Process_iot" id="BPMNPlane_Process_0nv76mx">
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="BPMNShape_StartEvent_1">
+        <omgdc:Bounds height="36.0" width="36.0" x="179.0" y="199.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_177jqlz" id="BPMNShape_ExclusiveGateway_177jqlz">
+        <omgdc:Bounds height="40.0" width="40.0" x="940.0" y="197.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndEvent_118psbm" id="BPMNShape_EndEvent_118psbm">
+        <omgdc:Bounds height="36.0" width="36.0" x="1220.0" y="199.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="80.0" width="100.0" x="280.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="80.0" width="100.0" x="445.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="80.0" width="100.0" x="610.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="80.0" width="100.0" x="775.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="80.0" width="100.0" x="1055.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="101.0" width="261.0" x="170.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1j39axm" id="BPMNEdge_SequenceFlow_1j39axm">
+        <omgdi:waypoint x="215.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1ycfzci" id="BPMNEdge_SequenceFlow_1ycfzci">
+        <omgdi:waypoint x="380.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="445.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0ih253z" id="BPMNEdge_SequenceFlow_0ih253z">
+        <omgdi:waypoint x="545.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="610.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_05nkwxn" id="BPMNEdge_SequenceFlow_05nkwxn">
+        <omgdi:waypoint x="710.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="775.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0i1r7ae" id="BPMNEdge_SequenceFlow_0i1r7ae">
+        <omgdi:waypoint x="875.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_106dunu" id="BPMNEdge_SequenceFlow_106dunu">
+        <omgdi:waypoint x="980.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1055.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_19iyjhr" id="BPMNEdge_SequenceFlow_19iyjhr">
+        <omgdi:waypoint x="1155.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1220.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_17qnkgu" id="BPMNEdge_SequenceFlow_17qnkgu">
+        <omgdi:waypoint x="960.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="960.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
+        <omgdi:waypoint x="300.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="197.0" y="235.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

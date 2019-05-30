@@ -73,31 +73,30 @@ public class L2LTaskRuntimeImpl implements TaskRuntime {
     }
 
     public Page<Task> tasks(Pageable pageable, GetTasksPayload getTasksPayload) {
-//        TaskQuery taskQuery = this.taskService.createTaskQuery();
-//        if (getTasksPayload == null) {
-//            getTasksPayload = TaskPayloadBuilder.tasks().build();
-//        }
-//
-//        String authenticatedUserId = this.securityManager.getAuthenticatedUserId();
-//        if (authenticatedUserId != null && !authenticatedUserId.isEmpty()) {
-//            List<String> tasks = this.userGroupManager.getUserGroups(authenticatedUserId);
-//            getTasksPayload.setAssigneeId(authenticatedUserId);
-//            getTasksPayload.setGroups(tasks);
-//            taskQuery = (TaskQuery)((TaskQuery)((TaskQuery)taskQuery.or()).taskCandidateOrAssigned(getTasksPayload.getAssigneeId(), getTasksPayload.getGroups()).taskOwner(authenticatedUserId)).endOr();
-//            if (getTasksPayload.getProcessInstanceId() != null) {
-//                taskQuery = (TaskQuery)taskQuery.processInstanceId(getTasksPayload.getProcessInstanceId());
-//            }
-//
-//            if (getTasksPayload.getParentTaskId() != null) {
-//                taskQuery = (TaskQuery)taskQuery.taskParentTaskId(getTasksPayload.getParentTaskId());
-//            }
-//
-//            tasks = this.taskConverter.from(taskQuery.listPage(pageable.getStartIndex(), pageable.getMaxItems()));
-//            return new PageImpl(tasks, Math.toIntExact(taskQuery.count()));
-//        } else {
-//            throw new IllegalStateException("You need an authenticated user to perform a task query");
-//        }
-        return null;
+        TaskQuery taskQuery = this.taskService.createTaskQuery();
+        if (getTasksPayload == null) {
+            getTasksPayload = TaskPayloadBuilder.tasks().build();
+        }
+
+        String authenticatedUserId = this.securityManager.getAuthenticatedUserId();
+        if (authenticatedUserId != null && !authenticatedUserId.isEmpty()) {
+            List<String> task = this.userGroupManager.getUserGroups(authenticatedUserId);
+            getTasksPayload.setAssigneeId(authenticatedUserId);
+            getTasksPayload.setGroups(task);
+            taskQuery = (TaskQuery)((TaskQuery)((TaskQuery)taskQuery.or()).taskCandidateOrAssigned(getTasksPayload.getAssigneeId(), getTasksPayload.getGroups()).taskOwner(authenticatedUserId)).endOr();
+            if (getTasksPayload.getProcessInstanceId() != null) {
+                taskQuery = (TaskQuery)taskQuery.processInstanceId(getTasksPayload.getProcessInstanceId());
+            }
+
+            if (getTasksPayload.getParentTaskId() != null) {
+                taskQuery = (TaskQuery)taskQuery.taskParentTaskId(getTasksPayload.getParentTaskId());
+            }
+
+            List<Task> tasks = this.taskConverter.from(taskQuery.listPage(pageable.getStartIndex(), pageable.getMaxItems()));
+            return new PageImpl(tasks, Math.toIntExact(taskQuery.count()));
+        } else {
+            throw new IllegalStateException("You need an authenticated user to perform a task query");
+        }
     }
 
     public List<VariableInstance> variables(GetTaskVariablesPayload getTaskVariablesPayload) {

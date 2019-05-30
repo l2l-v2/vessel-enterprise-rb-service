@@ -58,3 +58,5 @@ public class APBIMsgHandler implements MsgEventHandler{
         binderAwareChannelResolver.resolveDestination(acquireProcessBusinessInformationMsg.getConnectorType()).send(apbMessage);
     }
 }
+
+

@@ -41,7 +41,20 @@ public class AnnotationUtils {
                 while (it.hasNext()){
                     ExtensionAttribute tAttr= it.next().get(0);//no duplicate attributes by default
                     if(tAttr != null){
-                        reflectFillAnnotationFiled(tAttr.getName().trim(), tAttr.getValue().trim(), annotaion ,Annotation.class);
+                        if(tAttr.getName().trim().equals("awsVariables") || tAttr.getName().trim().equals("processVariables") ||  tAttr.getName().trim().equals("executionvars")){
+                            String[] str1 = tAttr.getValue().trim().split(",");
+                            Map<String,Object> map = new HashMap<>();
+                            //循环加入map集合
+                            for (int i = 0; i < str1.length; i++) {
+                                //根据":"截取字符串数组
+                                String[] str2 = str1[i].split(":");
+                                //str2[0]为KEY,str2[1]为值
+                                map.put(str2[0], str2[1]);
+                            }
+                            reflectFillAnnotationFiled(tAttr.getName().trim(), map, annotaion ,Annotation.class);
+                        }else {
+                            reflectFillAnnotationFiled(tAttr.getName().trim(), tAttr.getValue().trim(), annotaion ,Annotation.class);
+                        }
                     }
                 }
                 annotations.add(annotaion);
@@ -67,7 +80,20 @@ public class AnnotationUtils {
                    while (it.hasNext()){
                        ExtensionAttribute tAttr= it.next().get(0);//no duplicate attributes by default
                        if(tAttr != null){
-                           reflectFillAnnotationFiled(tAttr.getName().trim(), tAttr.getValue().trim(), msgAnnotation , MsgAnnotation.class);
+                           if(tAttr.getName().trim().equals("awsVariables") || tAttr.getName().trim().equals("processVariables") ||  tAttr.getName().trim().equals("executionvars")){
+                               String[] str1 = tAttr.getValue().trim().split(",");
+                               Map<String,Object> map = new HashMap<>();
+                               //循环加入map集合
+                               for (int i = 0; i < str1.length; i++) {
+                                   //根据":"截取字符串数组
+                                   String[] str2 = str1[i].split(":");
+                                   //str2[0]为KEY,str2[1]为值
+                                   map.put(str2[0], str2[1]);
+                               }
+                               reflectFillAnnotationFiled(tAttr.getName().trim(), map, msgAnnotation ,Annotation.class);
+                           }else {
+                                reflectFillAnnotationFiled(tAttr.getName().trim(), tAttr.getValue().trim(), msgAnnotation , MsgAnnotation.class);
+                           }
                        }
                    }
                    msgAnnotations.add(msgAnnotation);

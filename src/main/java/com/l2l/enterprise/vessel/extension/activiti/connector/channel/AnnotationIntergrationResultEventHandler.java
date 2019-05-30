@@ -57,9 +57,20 @@ public class AnnotationIntergrationResultEventHandler {
             annotationIntergrationContext = (AnnotationIntergrationContextImpl) integrationResult.getAnnotationIntegrationRequest().getAnnotationIntergrationContext() ;
         }
         if (integrationContextEntity != null) {
-                this.integrationContextService.deleteIntegrationContext(integrationContextEntity);
-            if (this.runtimeService.createExecutionQuery().executionId(integrationContextEntity.getExecutionId()).list().size() > 0) {
-                //获取commandcontext 必须要采用cmd模式
+            this.integrationContextService.deleteIntegrationContext(integrationContextEntity);
+            if(integrationResult.getAnnotationIntegrationRequest().getAnnotationIntergrationContext().getAnnotation().getImplementationType().equals("msgType")){
+                if (this.runtimeService.createExecutionQuery().executionId(integrationContextEntity.getExecutionId()).list().size() > 0) {
+                    //获取commandcontext 必须要采用cmd模式   这里是否口语添加流程变量的修改代码 感觉可以
+                    this.runtimeService.setVariables(integrationContextEntity.getExecutionId(),
+                        integrationResult.getAnnotationIntegrationRequest().getAnnotationIntergrationContext().getAnnotation().getExecutionvars());
+                } else {
+                    String message = "No task is in this RB is waiting for integration result with execution id `" + integrationContextEntity.getExecutionId() + ", flow node id `" + integrationResult.getIntegrationContext().getActivityElementId() + "`. The integration result for the integration context `" + integrationResult.getIntegrationContext().getId() + "` will be ignored.";
+                    LOGGER.debug(message);
+                }
+            }else if(this.runtimeService.createExecutionQuery().executionId(integrationContextEntity.getExecutionId()).list().size() > 0) {
+                //获取commandcontext 必须要采用cmd模式   这里是否口语添加流程变量的修改代码 感觉可以
+                this.runtimeService.setVariables(integrationContextEntity.getExecutionId(),
+                    integrationResult.getAnnotationIntegrationRequest().getAnnotationIntergrationContext().getAnnotation().getExecutionvars());
                 this.annotationService.trigger(integrationContextEntity.getExecutionId(), integrationContextEntity,annotationIntergrationContext);
             } else {
                 String message = "No task is in this RB is waiting for integration result with execution id `" + integrationContextEntity.getExecutionId() + ", flow node id `" + integrationResult.getIntegrationContext().getActivityElementId() + "`. The integration result for the integration context `" + integrationResult.getIntegrationContext().getId() + "` will be ignored.";

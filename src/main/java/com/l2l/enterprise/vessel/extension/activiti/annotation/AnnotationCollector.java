@@ -23,7 +23,6 @@ public class AnnotationCollector {
             List<MsgAnnotation> mAns = annotationService.getAllMsgAnnotations(pdId);
             annotationManager.getMsgAnnotations().addAll(mAns);
         }
-        log.info(annotationManager.getMsgAnnotations().toString());
         log.debug("All annotations are collected from all deployed process definitions");
     }
 }
