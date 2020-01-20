@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:l2l="http://www.l2l.com" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1540111006206" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="annotation_process_1" isClosed="false" isExecutable="true" processType="None">
-      <extensionElements>
-         <l2l:annotation id="msg_anno_test"  name="ForSsp" implementationType="msgType" destination="annotationConsumer"  iftttRules="if:true,then:topic" />
-      </extensionElements>
+      <!--<extensionElements>-->
+         <!--&lt;!&ndash;<l2l:annotation id="msg_anno_test"  name="ForSsp" implementationType="msgType" destination="annotationConsumer"  iftttRules="if:true,then:topic" />&ndash;&gt;-->
+      <!--</extensionElements>-->
       <startEvent id="_2" name="StartEvent">
-        <extensionElements>
-            <l2l:annotation id="anno_test0 "  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer"  iftttRules="[{if:1>0,then:topic}]"/>
-        </extensionElements>
+        <!--<extensionElements>-->
+            <!--<l2l:annotation id="anno_test0 "  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer"  iftttRules="[{if:1>0,then:topic}]" valueExchange="[(name:OI2OQ),(input,OI),(url,localhost:9002/VDML)]" type="BI" constraints="[OQ.Cost(loc,time,goods) + OQ.RC(loc,time,goods) > 6 ]" />-->
+        <!--</extensionElements>-->
     </startEvent>
     <serviceTask id="_3" implementation="defaultServiceTaskConnector"  name="ServiceTask">
         <extensionElements>
-            <l2l:annotation id="anno_test1"  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" iftttRules="[{if:1>0,then:topic}]" >
+            <l2l:annotation id="MyMuffin,num,time"  name="ForColdChain" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" iftttRules="[{if:1>0,then:topic}]"  type="AR" constraints="[MyMuffinARCons]">
             </l2l:annotation>
-            <l2l:annotation id="anno_test2"  name="ForColdChain" implementationType="globalType" pointcutType="PostProcessor" destination="annotationConsumer" iftttRules="[{if:1>0,then:topic}]" />
+            <!--<l2l:annotation id="anno_test2"  name="ForColdChain" implementationType="globalType" pointcutType="PostProcessor" destination="annotationConsumer" iftttRules="[{if:1>0,then:topic}]" />-->
         </extensionElements>
     </serviceTask>
-    <userTask activiti:assignee="admin"  id="_4" name="UserTask"/>
+    <userTask activiti:assignee="admin"  id="_4" name="UserTask">
+        <!--<extensionElements>-->
+            <!--<l2l:annotation id="Customer"  name="value" implementationType="globalType" pointcutType="PreProcessor" destination="annotationConsumer" iftttRules="" valueExchange="[(name:AR2AP),(input,MyMuffinAR),(url,localhost:9002/VDML)]" type="AP" constraints="[CustomerAPCons]">-->
+            <!--</l2l:annotation>-->
+        <!--</extensionElements>-->
+      </userTask>
     <endEvent id="_5" name="EndEvent"/>
     <sequenceFlow id="_6" sourceRef="_2" targetRef="_3"/>
     <sequenceFlow id="_7" sourceRef="_3" targetRef="_4"/>

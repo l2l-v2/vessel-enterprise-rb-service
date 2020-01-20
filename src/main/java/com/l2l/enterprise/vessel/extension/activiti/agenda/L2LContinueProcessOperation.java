@@ -142,7 +142,7 @@ public class L2LContinueProcessOperation extends ContinueProcessOperation {
                 }
             }
         }else{
-            logger.debug("Now , Only third-party delivery is supported");
+            logger.debug("Now , Only third-party delivery is supported 123");
         }
     }
 

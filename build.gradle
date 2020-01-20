@@ -176,6 +176,8 @@ dependencies {
     compile group: 'org.jumpmind.symmetric', name: 'symmetric-csv', version: '3.5.19'
     compile group: 'org.springframework', name: 'spring-websocket',version: '5.0.0.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-messaging', version: '4.2.5.RELEASE'
+// https://mvnrepository.com/artifact/io.netty/netty-transport-native-epoll
+    compile group: 'io.netty', name: 'netty-transport-native-epoll'
 
 
 

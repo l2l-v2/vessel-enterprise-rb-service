@@ -19,6 +19,9 @@ public class Annotation {
     public String iothub;
     public String topic;
     public Map<String,Object> executionvars = new HashMap<>();
+    public String valueExchange;
+    public String type;
+    public String constraints;
 
     @Override
     public String toString() {
@@ -38,6 +41,9 @@ public class Annotation {
             ", iftttRules='" + iftttRules + '\'' +
             ", IOThub='" + iothub + '\'' +
             ", Topic='" + topic + '\'' +
+            ", valueExchange='" + valueExchange + '\'' +
+            ", type='" + type + '\'' +
+            ", constraints='" + constraints + '\'' +
             '}';
     }
 
@@ -58,12 +64,16 @@ public class Annotation {
             ", \"iftttRules\"" + ":\"" + iftttRules + '\"' +
             ", \"IOThub\"" + ":\"" + iothub + '\"' +
             ", \"Topic\"" + ":\"" + topic + '\"' +
+            ", \"valueExchange\"" + ":\"" + valueExchange + '\"' +
+            ", \"type\"" + ":\"" + type + '\"' +
+            ", \"constraints\"" + ":\"" + constraints + '\"' +
             '}';
     }
 
     public Annotation(){
 
     }
+
 
     public Map<String, Object> getExecutionvars() {
         return executionvars;
@@ -216,5 +226,29 @@ public class Annotation {
 
     public void setProcessDefinitionId(String processDefinitionId) {
         this.processDefinitionId = processDefinitionId;
+    }
+
+    public String getValueExchange() {
+        return valueExchange;
+    }
+
+    public void setValueExchange(String valueExchange) {
+        this.valueExchange = valueExchange;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getConstraints() {
+        return constraints;
+    }
+
+    public void setConstraints(String constraints) {
+        this.constraints = constraints;
     }
 }
